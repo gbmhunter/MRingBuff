@@ -9,7 +9,7 @@ A C++ FIFO buffer framework designed for embedded applications.
 - Author: gbmhunter <gbmhunter@gmail.com> (http://www.cladlab.com)
 - First Ever Commit: 2013/07/30
 - Last Modified: 2013/07/30
-- Version: v0.1.0.0
+- Version: v0.1.0.1
 - Company: CladLabs
 - Project: Free Code Libraries
 - Language: C++
@@ -52,5 +52,6 @@ Changelog
 ======== ========== ===================================================================================================
 Version  Date       Comment
 ======== ========== ===================================================================================================
-v0.1.0.0 2013/07/30 First version!. Bare-bones files, not functional yet.
+v0.1.0.1 2013/07/30 Got rid of exclamation mark which corrupted commit message.
+v0.1.0.0 2013/07/30 First version. Bare-bones files, not functional yet.
 ======== ========== ===================================================================================================
