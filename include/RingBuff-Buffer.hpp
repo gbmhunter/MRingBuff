@@ -1,10 +1,11 @@
 //!
-//! @file 		FiFoFum-Buffer.hpp
-//! @author 	Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @date 		2013/07/30
-//! @brief 		Implements the FIFO buffer.
+//! @file 				RingBuff-Buffer.hpp
+//! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
+//! @created 			2013-07-30
+//! @last-modified	2014-07-21
+//! @brief 				Implements the ring buffer.
 //! @details
-//!				See README.rst in root dir for more info.
+//!						See README.rst in root dir for more info.
 
 #ifndef __cplusplus
 	#error Please build with C++ compiler
@@ -14,22 +15,24 @@
 //======================================== HEADER GUARD =========================================//
 //===============================================================================================//
 
-#ifndef FIFOFUM_BUFFER_H
-#define FIFOFUM_BUFFER_H
+#ifndef RING_BUFFER_H
+#define RING_BUFFER_H
 
 //===============================================================================================//
 //========================================== INCLUDES ===========================================//
 //===============================================================================================//
 
+// System libraries
 #include <stdint.h>
 
-#include "FiFoFum-Config.hpp"
+// User source
+#include "RingBuff-Config.hpp"
 
 //===============================================================================================//
 //======================================== NAMESPACE ============================================//
 //===============================================================================================//
 
-namespace FiFoFum
+namespace RingBuff
 {
 	//===============================================================================================//
 	//============================================= CLASS ===========================================//
@@ -91,8 +94,8 @@ namespace FiFoFum
 	
 	// none
 	
-} // namespace FiFoFum
+} // namespace RingBuff
 
-#endif // #ifndef FIFOFUM_BUFFER_H
+#endif // #ifndef #ifndef RING_BUFFER_H
 
 // EOF
