@@ -77,7 +77,6 @@ unitTestLib:
 clean: clean-ut clean-ring-buff
 	# Clean UnitTest++ library (has it's own Makefile)
 	$(MAKE) -C ./lib/UnitTest++/ clean
-	$(MAKE) -C ./lib/logger-cpp/ clean
 	
 clean-ut:
 	@echo " Cleaning test object files..."; $(RM) ./test/*.o

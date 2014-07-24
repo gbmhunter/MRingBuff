@@ -34,10 +34,10 @@ namespace RingBuffTest
 			RingBuffNs::RingBuff ringBuff(100);
 
 			char someChars[] = "testing";
-			ringBuff.Write(someChars, 8);
+			ringBuff.Write(someChars);
 
 			char readBuff[8];
-			ringBuff.Read(readBuff, 8);
+			ringBuff.Read((uint8_t*)readBuff, 8);
 
 			// Check read data is equal to written data
 			CHECK_EQUAL("testing", readBuff);
@@ -47,12 +47,12 @@ namespace RingBuffTest
 		{
 			RingBuffNs::RingBuff ringBuff(100);
 
-			char readBuff[10] = {0};
+			uint8_t readBuff[10] = {0};
 			// Read while empty
 			ringBuff.Read(readBuff, 8);
 
 			// Check buffer is still empty
-			CHECK_EQUAL("", readBuff);
+			CHECK_EQUAL(0, readBuff[0]);
 		}
 		
 		TEST(ClearTest)
@@ -60,15 +60,33 @@ namespace RingBuffTest
 			RingBuffNs::RingBuff ringBuff(100);
 
 			char someChars[] = "testing";
-			ringBuff.Write(someChars, 8);
+			ringBuff.Write(someChars);
 
+			// Clear the buffer
 			ringBuff.Clear();
 
 			char readBuff[8];
-			ringBuff.Read(readBuff, 8);
+			ringBuff.Read((uint8_t*)readBuff, 8);
 
-			// Check read data is equal to written data
+			// Check read data is empty
 			CHECK_EQUAL("", readBuff);
+		}
+
+		TEST(MultipleWritesThenReadTest)
+		{
+			RingBuffNs::RingBuff ringBuff(100);
+
+			ringBuff.Write((uint8_t*)"12", 2);
+			ringBuff.Write((uint8_t*)"34", 2);
+			ringBuff.Write((uint8_t*)"56", 2);
+			ringBuff.Write((uint8_t*)"78", 2);
+
+			char readBuff[9];
+			ringBuff.Read((uint8_t*)readBuff, 8);
+			readBuff[9] = '\0';
+
+			// Check read data is empty
+			CHECK_EQUAL("12345678", readBuff);
 		}
 
 	} // SUITE(BasicTests)

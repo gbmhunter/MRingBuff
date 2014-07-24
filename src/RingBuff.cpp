@@ -18,6 +18,7 @@
 // System libraries
 #include <stdint.h>		// uint32_t, e.t.c
 #include <stdlib.h>		// calloc();
+#include <iostream>		// std::cout
 
 // User includes
 #include "../include/Config.hpp"
@@ -46,7 +47,7 @@ namespace RingBuffNs
 			return;
 		}
 		
-		this->size = size;
+		this->size = sizeOfBuff;
 		this->headPos = 0;
 		this->tailPos = 0;
 		
@@ -54,13 +55,13 @@ namespace RingBuffNs
 		this->initComplete = true;
 	}
 	
-	uint32_t RingBuff::Read(char* buff, uint32_t numBytes)
+	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
 	{
 		if(!this->initComplete)
 			return 0;
 	
 		uint32_t i;
-		char* currPos;
+		uint8_t *currPos;
 		currPos = buff;
 		
 		for(i = 0; i < numBytes; i++)
@@ -93,13 +94,13 @@ namespace RingBuffNs
 		return numBytes;
 	}
  
-	uint32_t RingBuff::Write(const char * buff, uint32_t numBytes)
+	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes)
 	{
 		if(!this->initComplete)
 			return 0;
 	
 		int i;
-		const char * currPos;
+		const uint8_t * currPos;
 		currPos = buff;
 		 
 		for(i = 0; i < numBytes; i++)
@@ -131,6 +132,33 @@ namespace RingBuffNs
 		return numBytes;
 	}
 	
+	uint32_t RingBuff::Write(const char *string)
+	{
+		bool nullFound = false;
+		uint32_t x;
+		for(x = 0; x < this->size; x++)
+		{
+			// Look for null-terminating string.
+			if(string[x] == '\0')
+			{
+				nullFound = true;
+				break;
+			}
+		}
+
+		if(nullFound)
+		{
+			// Null has been found, valid string
+			return this->Write((const uint8_t*)string, x);
+		}
+		else
+		{
+			// Null has not be found, either string was not null-terminated, or was too large
+			// to fit in buffer, nothing written to buffer
+			return 0;
+		}
+	}
+
 	void RingBuff::Clear()
 	{
 		// Does not 0 data, as this does not matter,
