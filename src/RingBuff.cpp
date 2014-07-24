@@ -1,8 +1,8 @@
 //!
-//! @file 				RingBuff-Buffer.cpp
+//! @file 				RingBuff.cpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified	2014-07-21
+//! @last-modified	2014-07-24
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -15,30 +15,50 @@
 //========================================= INCLUDES ============================================//
 //===============================================================================================//
 
+// System libraries
+#include <stdint.h>		// uint32_t, e.t.c
+#include <stdlib.h>		// calloc();
+
 // User includes
-#include "../include/RingBuff-Config.hpp"
+#include "../include/Config.hpp"
+#include "../include/RingBuff.hpp"
 
 //===============================================================================================//
 //======================================== NAMESPACE ============================================//
 //===============================================================================================//
 
-namespace RingBuff
+namespace RingBuffNs
 {
 	
 	//===============================================================================================//
 	//================================ PUBLIC METHOD DECLARATIONS ===================================//
 	//===============================================================================================//
 
-	Buffer(char* bufPtr, uint32_t size)
-	{
-		this->bufPtr = bufPtr;
+	RingBuff::RingBuff(uint32_t sizeOfBuff)
+	{			
+		// Create space for buffer
+		this->buffMemPtr = (char*)calloc(sizeOfBuff, sizeof(char));
+		
+		if(this->buffMemPtr == NULL)
+		{
+			// Memory allocation failed
+			this->initComplete = false;
+			return;
+		}
+		
 		this->size = size;
 		this->headPos = 0;
 		this->tailPos = 0;
+		
+		// Init completed successfully
+		this->initComplete = true;
 	}
 	
-	uint32_t Read(char* buff, uint32_t numBytes)
+	uint32_t RingBuff::Read(char* buff, uint32_t numBytes)
 	{
+		if(!this->initComplete)
+			return 0;
+	
 		uint32_t i;
 		char* currPos;
 		currPos = buff;
@@ -50,7 +70,7 @@ namespace RingBuff
 			if(tailPos != headPos)
 			{ 		
 				// Read one byte from the FIFO buffer
-				*currPos++ = fifoBuff[tailPos];
+				*currPos++ = buffMemPtr[tailPos];
 				
 				 // Increment the tail
 				tailPos++; 
@@ -73,17 +93,20 @@ namespace RingBuff
 		return numBytes;
 	}
  
-	uint32_t Write(const char * buff, uint32_t numBytes)
+	uint32_t RingBuff::Write(const char * buff, uint32_t numBytes)
 	{
+		if(!this->initComplete)
+			return 0;
+	
 		int i;
 		const char * currPos;
 		currPos = buff;
 		 
-		for(i = 0; i < nbytes; i++)
+		for(i = 0; i < numBytes; i++)
 		{
 			// Check to see if there is no space left in the buffer
 			if((headPos + 1 == tailPos) ||
-				((headPos + 1 == size) && (tailPos == 0))
+				((headPos + 1 == size) && (tailPos == 0)))
 			{
 				// We have run out of space!
 				return i; 
@@ -91,7 +114,7 @@ namespace RingBuff
 			else
 			{
 				// Write one byte to buffer
-				fifoBuff[headPos] = *currPos++;
+				buffMemPtr[headPos] = *currPos++;
 				
 				// Increment the head
 				headPos++;  
@@ -108,11 +131,20 @@ namespace RingBuff
 		return numBytes;
 	}
 	
+	void RingBuff::Clear()
+	{
+		// Does not 0 data, as this does not matter,
+		// just sets tail = head
+		if(this->tailPos != this->headPos)
+			this->tailPos = this->headPos;
+
+	}
+
 	//===============================================================================================//
 	//=============================== PRIVATE METHOD DECLARATIONS ===================================//
 	//===============================================================================================//
 
 
-} // namespace RingBuff
+} // namespace RingBuffNs
 
 // EOF

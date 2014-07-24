@@ -8,8 +8,8 @@ A C++ ring (circular) buffer framework designed for embedded applications.
 
 - Author: gbmhunter <gbmhunter@gmail.com> (http://www.cladlab.com)
 - First Ever Commit: 2013-07-30
-- Last Modified: 2014-07-23
-- Version: v2.0.1.0
+- Last Modified: 2014-07-24
+- Version: v2.1.0.0
 - Company: CladLabs
 - Project: Free Code Libraries
 - Language: C++
@@ -55,6 +55,7 @@ Changelog
 ======== ========== ===================================================================================================
 Version  Date       Comment
 ======== ========== ===================================================================================================
+v2.1.0.0 2014/07/24 Fixed preprocessor includes. Added 'Ns' to namespace, renamed class from 'Buffer' to 'RingBuff'. Added eclipse project files. Fixed makefile, closes #1. Added UnitTest++ to 'lib/'. Added constructor and basic read/write unit tests, closes #2. Added ability to clear data, closes #7.
 v2.0.1.0 2014/07/23 Dropped the 'RingBuff' prefix from code files.
 v2.0.0.0 2014/07/21 Renamed project from FiFoFum-Cpp to RingBuff-Cpp, refactored code appropriately.
 v1.0.0.0 2013/07/30 Basic code finished, now have functional FIFO buffer. 

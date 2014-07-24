@@ -1,8 +1,8 @@
 //!
-//! @file 				RingBuff-Config.hpp
+//! @file 				Config.hpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified	2014-07-21
+//! @last-modified	2014-07-24
 //! @brief 				Configuration file for RingBuff.
 //! @details
 //!						See README.rst in root dir for more info.
