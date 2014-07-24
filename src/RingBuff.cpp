@@ -35,10 +35,11 @@ namespace RingBuffNs
 	//================================ PUBLIC METHOD DECLARATIONS ===================================//
 	//===============================================================================================//
 
-	RingBuff::RingBuff(uint32_t sizeOfBuff)
+	RingBuff::RingBuff(uint32_t capacity)
 	{			
-		// Create space for buffer
-		this->buffMemPtr = (char*)calloc(sizeOfBuff, sizeof(char));
+		// Create space for buffer, also 0 buffer (although
+		// not strictly needed)
+		this->buffMemPtr = (char*)calloc(capacity, sizeof(char));
 		
 		if(this->buffMemPtr == NULL)
 		{
@@ -47,7 +48,7 @@ namespace RingBuffNs
 			return;
 		}
 		
-		this->size = sizeOfBuff;
+		this->capacity = capacity;
 		this->headPos = 0;
 		this->tailPos = 0;
 		
@@ -55,6 +56,15 @@ namespace RingBuffNs
 		this->initComplete = true;
 	}
 	
+	RingBuff::~RingBuff()
+	{
+		if(!this->initComplete)
+			return;
+
+		// Free memory allocated in constructor
+		free(this->buffMemPtr);
+	}
+
 	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
 	{
 		if(!this->initComplete)
@@ -77,7 +87,7 @@ namespace RingBuffNs
 				tailPos++; 
 				
 				// Check for wrap-around
-				if(tailPos == size)
+				if(tailPos == capacity)
 				{  
 					// Reset tail
 					tailPos = 0;
@@ -107,7 +117,7 @@ namespace RingBuffNs
 		{
 			// Check to see if there is no space left in the buffer
 			if((headPos + 1 == tailPos) ||
-				((headPos + 1 == size) && (tailPos == 0)))
+				((headPos + 1 == capacity) && (tailPos == 0)))
 			{
 				// We have run out of space!
 				return i; 
@@ -121,7 +131,7 @@ namespace RingBuffNs
 				headPos++;  
 				
 				// Check for wrap-around
-				if(headPos == size)
+				if(headPos == capacity)
 				{  
 					headPos = 0;
 				}
@@ -134,9 +144,12 @@ namespace RingBuffNs
 	
 	uint32_t RingBuff::Write(const char *string)
 	{
+		if(!this->initComplete)
+			return 0;
+
 		bool nullFound = false;
 		uint32_t x;
-		for(x = 0; x < this->size; x++)
+		for(x = 0; x < this->capacity; x++)
 		{
 			// Look for null-terminating string.
 			if(string[x] == '\0')
@@ -161,11 +174,42 @@ namespace RingBuffNs
 
 	void RingBuff::Clear()
 	{
+		if(!this->initComplete)
+			return;
+
 		// Does not 0 data, as this does not matter,
 		// just sets tail = head
 		if(this->tailPos != this->headPos)
 			this->tailPos = this->headPos;
 
+	}
+
+	uint32_t RingBuff::Capacity()
+	{
+		if(!this->initComplete)
+			return 0;
+
+		// Just return the saved size of the buffer
+		return this->capacity;
+	}
+
+
+	uint32_t RingBuff::NumElements()
+	{
+		if(!this->initComplete)
+			return 0;
+
+		// Calculate the number of elements currently in the buffer
+		if(this->headPos >= this->tailPos)
+		{
+			// This is the simple situation, no wrap around
+			return this->headPos - this->tailPos;
+		}
+		else
+		{
+			// This is when wrap around has occurred
+			return (this->capacity - this->tailPos) + this->headPos;
+		}
 	}
 
 	//===============================================================================================//

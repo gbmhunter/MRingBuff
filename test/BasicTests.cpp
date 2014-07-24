@@ -28,6 +28,14 @@ namespace RingBuffTest
 			CHECK(true);
 		}
 
+		TEST(BasicCapacityTest)
+		{
+			RingBuffNs::RingBuff ringBuff(50);
+
+			// Check capacity is calculated correctly
+			CHECK_EQUAL(50, ringBuff.Capacity());
+		}
+
 		TEST(BasicReadWriteTest)
 		{
 

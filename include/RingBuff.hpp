@@ -2,7 +2,7 @@
 //! @file 				RingBuff.hpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified	2014-07-24
+//! @last-modified		2014-07-25
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -15,8 +15,8 @@
 //======================================== HEADER GUARD =========================================//
 //===============================================================================================//
 
-#ifndef RING_BUFF_H
-#define RING_BUFF_H
+#ifndef RING_BUFF_RING_BUFF_H
+#define RING_BUFF_RING_BUFF_H
 
 //===============================================================================================//
 //========================================== INCLUDES ===========================================//
@@ -41,22 +41,21 @@ namespace RingBuffNs
 	{	
 		
 		public:
-		
+
 			//===============================================================================================//
-			//==================================== CONSTRUCTORS/DESTRUCTOR ==================================//
+			//=================================== PUBLIC METHOD DECLARATIONS ================================//
 			//===============================================================================================//
 			
 			//! @brief		Initialises the buffer (incl. malloc()ing memory for buffer), ready for use.
 			//! @details	If initialisation fails, IsInitComplete() will return false. This method is used,
 			//!				because exceptions are not supported (designed to be compatible with embedded
 			//!				microcontrollers)
-			//! @param		sizeOfBuff		The size (in bytes) of the buffer.
-			RingBuff(uint32_t sizeOfBuff);
-			
-			//===============================================================================================//
-			//=================================== PUBLIC METHOD DECLARATIONS ================================//
-			//===============================================================================================//
-			
+			//! @param		capacity	The size (in bytes) of the buffer.
+			RingBuff(uint32_t capacity);
+
+			//! @brief		Destructor. Frees memory allocated in constructor.
+			~RingBuff();
+
 			//! @brief		Use this to check if the initialisation in the constructor was successful.
 			//! @returns	True if initialisation was successful, otherwise false.
 			bool IsInitComplete() const;
@@ -87,6 +86,14 @@ namespace RingBuffNs
 			//! @details	Does not actually 0 data as this is not required, just sets tailPos = headPos.
 			void Clear();
 
+			//! @brief		Returns the size (capacity) of the buffer.
+			//! 			This is NOT how many bytes are currently in the buffer, see NumElements().
+			uint32_t Capacity();
+
+			//! @brief		Returns the number of elements currently in the buffer. Size() returns the capacity of
+			//!				the buffer.
+			uint32_t NumElements();
+
 			//===============================================================================================//
 			//======================================= PUBLIC VARIABLES ======================================//
 			//===============================================================================================//
@@ -102,12 +109,14 @@ namespace RingBuffNs
 			char* buffMemPtr;
 			
 			//! @brief		The size of the buffer (in bytes). Set by Buffer().
-			uint32_t size;
+			uint32_t capacity;
 			
 			//! @brief		The head position, measured in bytes from the start of the buffer (bufPtr).
+			//! @details	This is the next element to write to.
 			uint32_t headPos;
 			
 			//! @brief		The tail position, measured in bytes from the start of the buffer (bufPtr).
+			//! @details	This is the next element to read from.
 			uint32_t tailPos;
 		
 	};
@@ -120,6 +129,6 @@ namespace RingBuffNs
 	
 } // namespace RingBuffNs
 
-#endif // #ifndef RING_BUFF_H
+#endif // #ifndef RING_BUFF_RING_BUFF_H
 
 // EOF
