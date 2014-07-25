@@ -67,8 +67,8 @@ namespace RingBuffNs
 			uint32_t Write(const uint8_t* buff, uint32_t numBytes);
 
 			//! @brief		Writes a null-terminated string to the buffer. Does not write the null character
-			//!				to the buffer. Will not write anything (a returns 0) if null-character cannot be found or string
-			//!				is too large for buffer.
+			//!				to the buffer. Will not write anything (a returns 0) if null-character cannot
+			//!				be found or string is too large for buffer.
 			//! @details	This looks for the null character and then calls
 			//!				uint32_t Write(const uint8_t* buff, uint32_t numBytes).
 			//! @param		string		The null-terminated string to write to the buffer.
@@ -80,7 +80,6 @@ namespace RingBuffNs
 			//! @returns	Number of bytes read (which could be from 0 to numBytes). Returns 0 if IsInitComplete()
 			//!				is false.
 			uint32_t Read(uint8_t* buff, uint32_t numBytes);
-
 			
 			//! @brief		Clears all data in the ring buffer.
 			//! @details	Does not actually 0 data as this is not required, just sets tailPos = headPos.
