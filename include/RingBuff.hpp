@@ -88,11 +88,19 @@ namespace RingBuffNs
 
 			//! @brief		Returns the size (capacity) of the buffer.
 			//! 			This is NOT how many bytes are currently in the buffer, see NumElements().
-			uint32_t Capacity();
+			uint32_t Capacity() const;
 
-			//! @brief		Returns the number of elements currently in the buffer. Size() returns the capacity of
+			//! @brief		Returns the number of elements currently in the buffer. Capacity() returns the capacity of
 			//!				the buffer.
-			uint32_t NumElements();
+			uint32_t NumElements() const;
+
+			//! @brief		Attempts to resize the buffer memory.
+			//! @details	If the buffer size is increased, all current data will be preserved. If the buffer
+			//!				size is decreased, the largest amount of data possible will be preserved, starting
+			//!				with the newest data written to the buffer.
+			//! @param		newCapacity		The new capacity you wish to resize the buffer memory to.
+			//! @returns	True is resize was successful (and Capacity() will return new value), otherwise false.
+			bool Resize(uint32_t newCapacity);
 
 			//===============================================================================================//
 			//======================================= PUBLIC VARIABLES ======================================//
@@ -101,12 +109,18 @@ namespace RingBuffNs
 						
 		private:
 		
+			//! @brief		Shifts all the data in the buffer memory so that is "starts from the start", i.e.
+			//!				tailPos = 0.
+			//! @details	This is useful to do before resizing the buffer memory using realloc(). Used in
+			//!				Resize().
+			void ShiftElementsSoTailPosIsZero();
+
 			//! @brief		Set to true by the constructor once initialisation is complete.
 			//! @details	Used by most methods to prevent errors if initialisation failed.
 			bool initComplete;
 		
 			//! @brief		Pointer to buffer. Memory allocated in constructor.
-			char* buffMemPtr;
+			uint8_t* buffMemPtr;
 			
 			//! @brief		The size of the buffer (in bytes). Set by Buffer().
 			uint32_t capacity;
@@ -118,6 +132,9 @@ namespace RingBuffNs
 			//! @brief		The tail position, measured in bytes from the start of the buffer (bufPtr).
 			//! @details	This is the next element to read from.
 			uint32_t tailPos;
+
+			//! @brief		Keeps track of the number of elements in the memory buffer.
+			uint32_t numElements;
 		
 	};
 

@@ -35,11 +35,15 @@ namespace RingBuffNs
 	//================================ PUBLIC METHOD DECLARATIONS ===================================//
 	//===============================================================================================//
 
-	RingBuff::RingBuff(uint32_t capacity)
+	RingBuff::RingBuff(uint32_t capacity):
+		capacity(capacity),
+		headPos(0),
+		tailPos(0),
+		numElements(0)
 	{			
 		// Create space for buffer, also 0 buffer (although
 		// not strictly needed)
-		this->buffMemPtr = (char*)calloc(capacity, sizeof(char));
+		this->buffMemPtr = (uint8_t*)calloc(capacity, sizeof(char));
 		
 		if(this->buffMemPtr == NULL)
 		{
@@ -47,10 +51,6 @@ namespace RingBuffNs
 			this->initComplete = false;
 			return;
 		}
-		
-		this->capacity = capacity;
-		this->headPos = 0;
-		this->tailPos = 0;
 		
 		// Init completed successfully
 		this->initComplete = true;
@@ -65,43 +65,9 @@ namespace RingBuffNs
 		free(this->buffMemPtr);
 	}
 
-	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
+	bool RingBuff::IsInitComplete() const
 	{
-		if(!this->initComplete)
-			return 0;
-	
-		uint32_t i;
-		uint8_t *currPos;
-		currPos = buff;
-		
-		for(i = 0; i < numBytes; i++)
-		{
-			// Make sure tail != head
-			// (check if any data is available)
-			if(tailPos != headPos)
-			{ 		
-				// Read one byte from the FIFO buffer
-				*currPos++ = buffMemPtr[tailPos];
-				
-				 // Increment the tail
-				tailPos++; 
-				
-				// Check for wrap-around
-				if(tailPos == capacity)
-				{  
-					// Reset tail
-					tailPos = 0;
-				}
-			}
-			else
-			{
-				// Return number of bytes read
-				return i;  
-			}
-		}
-		
-		// All bytes were read
-		return numBytes;
+		return this->initComplete;
 	}
  
 	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes)
@@ -115,27 +81,25 @@ namespace RingBuffNs
 		 
 		for(i = 0; i < numBytes; i++)
 		{
-			// Check to see if there is no space left in the buffer
-			if((headPos + 1 == tailPos) ||
-				((headPos + 1 == capacity) && (tailPos == 0)))
-			{
+			if(this->numElements >= this->capacity)
 				// We have run out of space!
-				return i; 
-			}
-			else
+				return 0;
+
+			// Write one byte to buffer
+			buffMemPtr[this->headPos] = *currPos++;
+
+			// Increment the head
+			this->headPos++;
+
+			// Increment the number of elements
+			this->numElements++;
+
+			// Check for wrap-around
+			if(this->headPos == this->capacity)
 			{
-				// Write one byte to buffer
-				buffMemPtr[headPos] = *currPos++;
-				
-				// Increment the head
-				headPos++;  
-				
-				// Check for wrap-around
-				if(headPos == capacity)
-				{  
-					headPos = 0;
-				}
+				headPos = 0;
 			}
+
 		}
 		
 		// All bytes where written
@@ -172,19 +136,56 @@ namespace RingBuffNs
 		}
 	}
 
+	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
+	{
+		if(!this->initComplete)
+			return 0;
+
+		uint32_t i;
+		uint8_t *currPos;
+		currPos = buff;
+
+		for(i = 0; i < numBytes; i++)
+		{
+			//
+			// Check if any data is available
+			if(this->numElements == 0)
+				return 0;
+
+			// Read one byte from the FIFO buffer
+			*currPos++ = this->buffMemPtr[this->tailPos];
+
+			// Decrement the number of elements
+			this->numElements--;
+
+			 // Increment the tail
+			this->tailPos++;
+
+			// Check for wrap-around
+			if(this->tailPos == this->capacity)
+			{
+				// Reset tail
+				this->tailPos = 0;
+			}
+		}
+
+		// All bytes were read
+		return numBytes;
+	}
+
 	void RingBuff::Clear()
 	{
 		if(!this->initComplete)
 			return;
 
 		// Does not 0 data, as this does not matter,
-		// just sets tail = head
-		if(this->tailPos != this->headPos)
-			this->tailPos = this->headPos;
-
+		// Just resets tail, head and number of elements
+		this->tailPos = 0;
+		this->headPos = 0;
+		this->numElements = 0;
 	}
 
-	uint32_t RingBuff::Capacity()
+	uint32_t RingBuff::Capacity() const
 	{
 		if(!this->initComplete)
 			return 0;
@@ -194,27 +195,72 @@ namespace RingBuffNs
 	}
 
 
-	uint32_t RingBuff::NumElements()
+	uint32_t RingBuff::NumElements() const
 	{
 		if(!this->initComplete)
 			return 0;
 
-		// Calculate the number of elements currently in the buffer
-		if(this->headPos >= this->tailPos)
+		return this->numElements;
+	}
+
+	bool RingBuff::Resize(uint32_t newCapacity)
+	{
+		// First, shuffle all data backwards so that tailPos is at 0
+		// this makes resizing easier
+		this->ShiftElementsSoTailPosIsZero();
+
+		// Now realloc() the memory. realloc() is guaranteed to preserve as much data as possible
+		// Since elements have been shifted to start of buffer this should work as intended
+		this->buffMemPtr = (uint8_t*)realloc(this->buffMemPtr, newCapacity);
+
+		// Make sure realloc() was successful
+		if(this->buffMemPtr != NULL)
 		{
-			// This is the simple situation, no wrap around
-			return this->headPos - this->tailPos;
+			// Update headPos if old headpos is larger than new capacity, as headPos will be
+			// currently out of range
+			if(this->numElements > newCapacity)
+			{
+				std::cout << "Head pos > capacity." << std::endl;
+				// Update headpos to end of memory (memory is full with data)
+				this->headPos = newCapacity - 1;
+				this->numElements = newCapacity;
+			}
+			std::cout << "Updating capacity." << std::endl;
+			// Update capacity
+			this->capacity = newCapacity;
+
+			return true;
 		}
 		else
-		{
-			// This is when wrap around has occurred
-			return (this->capacity - this->tailPos) + this->headPos;
-		}
+			// realloc failed! Don't update capacity and return false
+			return false;
+
 	}
 
 	//===============================================================================================//
 	//=============================== PRIVATE METHOD DECLARATIONS ===================================//
 	//===============================================================================================//
+
+	void RingBuff::ShiftElementsSoTailPosIsZero()
+	{
+		uint32_t currNumElements = this->NumElements();
+
+		// Create a temp buffer memory space for copying
+		// existing data into
+		uint8_t tempBuffMem[currNumElements];
+
+		// Read all data into temp memory
+		this->Read(tempBuffMem, currNumElements);
+
+		// Reset the head and tail positions back to 0, numElements does not change.
+		this->headPos = 0;
+		this->tailPos = 0;
+
+		// Now write all data back, tailPos should stay at 0
+		this->Write(tempBuffMem, currNumElements);
+
+		// Done!
+	}
 
 
 } // namespace RingBuffNs
