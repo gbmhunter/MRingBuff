@@ -134,6 +134,8 @@ namespace RingBuffNs
 			uint32_t tailPos;
 
 			//! @brief		Keeps track of the number of elements in the memory buffer.
+			//! @details	Incremented by 1 for every element written to the buffer, decremented
+			//!				by 1 for every element read from the buffer.
 			uint32_t numElements;
 		
 	};

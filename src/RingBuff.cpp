@@ -2,7 +2,7 @@
 //! @file 				RingBuff.cpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified	2014-07-24
+//! @last-modified		2014-07-25
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -18,7 +18,6 @@
 // System libraries
 #include <stdint.h>		// uint32_t, e.t.c
 #include <stdlib.h>		// calloc();
-#include <iostream>		// std::cout
 
 // User includes
 #include "../include/Config.hpp"
@@ -82,8 +81,12 @@ namespace RingBuffNs
 		for(i = 0; i < numBytes; i++)
 		{
 			if(this->numElements >= this->capacity)
-				// We have run out of space!
-				return 0;
+			{
+				// We have run out of space! Return how many bytes
+				// we managed to write
+				//std::cout << "Run out of space!" << std::endl;
+				return i;
+			}
 
 			// Write one byte to buffer
 			buffMemPtr[this->headPos] = *currPos++;
@@ -113,7 +116,10 @@ namespace RingBuffNs
 
 		bool nullFound = false;
 		uint32_t x;
-		for(x = 0; x < this->capacity; x++)
+
+		// Null character can be one more element past capacity, since
+		// it won't be written to the buffer
+		for(x = 0; x < this->capacity + 1; x++)
 		{
 			// Look for null-terminating string.
 			if(string[x] == '\0')
@@ -132,6 +138,7 @@ namespace RingBuffNs
 		{
 			// Null has not be found, either string was not null-terminated, or was too large
 			// to fit in buffer, nothing written to buffer
+			//std::cout << "Null not found!" << std::endl;
 			return 0;
 		}
 	}
@@ -150,7 +157,11 @@ namespace RingBuffNs
 			//
 			// Check if any data is available
 			if(this->numElements == 0)
-				return 0;
+			{
+				// No more data available, return the number of elements
+				// we managed to read
+				return i;
+			}
 
 			// Read one byte from the FIFO buffer
 			*currPos++ = this->buffMemPtr[this->tailPos];
@@ -220,12 +231,11 @@ namespace RingBuffNs
 			// currently out of range
 			if(this->numElements > newCapacity)
 			{
-				std::cout << "Head pos > capacity." << std::endl;
 				// Update headpos to end of memory (memory is full with data)
 				this->headPos = newCapacity - 1;
 				this->numElements = newCapacity;
 			}
-			std::cout << "Updating capacity." << std::endl;
+
 			// Update capacity
 			this->capacity = newCapacity;
 
