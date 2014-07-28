@@ -34,6 +34,7 @@
 
 namespace RingBuffNs
 {
+
 	//===============================================================================================//
 	//============================================= CLASS ===========================================//
 	//===============================================================================================//
@@ -41,6 +42,15 @@ namespace RingBuffNs
 	{	
 		
 		public:
+
+			//! @brief		Enumeration of different ways to read/write data.
+			//! @details	Used with RingBuff::Write() and RingBuff::Read().
+			enum class ReadWriteLogic
+			{
+				ANY,			//!< Reads as much data as there is in buffer, writes what ever data will fit in buffer.
+				ALL				//!< Will only read if specified num. of elements present,
+								//!< will only write data if there is enough space for all data in buffer.
+			};
 
 			//===============================================================================================//
 			//=================================== PUBLIC METHOD DECLARATIONS ================================//
@@ -64,6 +74,16 @@ namespace RingBuffNs
 			//! @details	Will return early if there is no more space left in the buffer. Does
 			//!				not write over contents. Returns 0 if IsInitComplete()
 			//!				is false.
+			//! @param		buff		Pointer to data in memory to read from (the stuff that will be
+			//!							written to the ring buffer).
+			//! @param		numBytes	The maximum number of bytes to write.
+			//!	@param		writeLogic	If set to ANY, ring buffer will be written with as much data as possible,
+			//!							even if all the data cannot fit. If set to ALL, data will be written
+			//!							only if there is enough space for all of it.
+			uint32_t Write(const uint8_t* buff, uint32_t numBytes, ReadWriteLogic writeLogic);
+
+			//! @brief		Simplified overload of Write(const uint8_t* buff, uint32_t numBytes, WriteLogic writeLogic).
+			//!	@details	writeLogic set to ALL
 			uint32_t Write(const uint8_t* buff, uint32_t numBytes);
 
 			//! @brief		Writes a null-terminated string to the buffer. Does not write the null character
@@ -72,6 +92,13 @@ namespace RingBuffNs
 			//! @details	This looks for the null character and then calls
 			//!				uint32_t Write(const uint8_t* buff, uint32_t numBytes).
 			//! @param		string		The null-terminated string to write to the buffer.
+			//!	@param		writeLogic	If set to ANY, ring buffer will be written with as much data as possible,
+			//!							even if the whole string cannot fit. If set to ALL, data will be written
+			//!							only if there is enough space for all of it.
+			uint32_t Write(const char *string, ReadWriteLogic writeLogic);
+
+			//! @brief		Simplified overload of Write(const char *string, WriteLogic writeLogic).
+			//!	@details	writeLogic set to ALL.
 			uint32_t Write(const char *string);
 
 			//! @brief		Reads up to a number of bytes from the ring buffer.

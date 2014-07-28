@@ -41,8 +41,8 @@ namespace RingBuffTest
 
 			RingBuffNs::RingBuff ringBuff(100);
 
-			char someChars[] = "testing";
-			ringBuff.Write(someChars);
+			char * someChars = "testing";
+			ringBuff.Write(someChars, RingBuffNs::RingBuff::ReadWriteLogic::ANY);
 
 			char readBuff[8];
 			ringBuff.Read((uint8_t*)readBuff, 8);

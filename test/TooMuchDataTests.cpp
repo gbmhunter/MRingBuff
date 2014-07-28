@@ -31,7 +31,7 @@ namespace RingBuffTest
 			char someChars[] = "0123456789012";
 
 			// Should only write 10 bytes, even though 12 are specified
-			CHECK_EQUAL(10, ringBuff.Write((uint8_t*)someChars, 12));
+			CHECK_EQUAL(10, ringBuff.Write((uint8_t*)someChars, 12, RingBuffNs::RingBuff::ReadWriteLogic::ANY));
 
 			// Now read these out
 			char readBuff[20] = {0};
@@ -42,7 +42,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(0, ringBuff.NumElements());
 
 			// Now insert more
-			ringBuff.Write((uint8_t*)someChars, 10);
+			ringBuff.Write((uint8_t*)someChars, 10, RingBuffNs::RingBuff::ReadWriteLogic::ANY);
 
 			memset(readBuff, '\0', sizeof(readBuff));
 			ringBuff.Read((uint8_t*)readBuff, 10);

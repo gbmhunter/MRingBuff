@@ -16,6 +16,7 @@
 //===============================================================================================//
 
 // System libraries
+//#include <iostream>		// debug
 #include <stdint.h>		// uint32_t, e.t.c
 #include <stdlib.h>		// calloc();
 
@@ -69,10 +70,28 @@ namespace RingBuffNs
 		return this->initComplete;
 	}
  
-	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes)
+	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic)
 	{
 		if(!this->initComplete)
 			return 0;
+
+		//std::cout << "numBytes = '" << numBytes << "' .numElements = '" << this->numElements << "'." << std::endl;
+
+		// Check whether user only wants to write data if all data
+		// will fit in buffer
+		if(writeLogic == ReadWriteLogic::ALL)
+		{
+			if(numBytes > (this->capacity - this->numElements))
+			{
+				// Not enough space in buffer to write all elements,
+				// return 0
+				//! @debug
+				//std::cout << "numBytes '" << numBytes << "' > numElements '" << this->numElements << "'." << std::endl;
+				return 0;
+			}
+		}
+
+		//std::cout << "Code makes it to 2!" << std::endl;
 	
 		int i;
 		const uint8_t * currPos;
@@ -91,11 +110,16 @@ namespace RingBuffNs
 			// Write one byte to buffer
 			buffMemPtr[this->headPos] = *currPos++;
 
+			//! @debug
+			//std::cout << "Element '" << buffMemPtr[this->headPos] << "' written to buff pos '" << this->headPos << "'." << std::endl;
+
 			// Increment the head
 			this->headPos++;
 
 			// Increment the number of elements
 			this->numElements++;
+
+
 
 			// Check for wrap-around
 			if(this->headPos == this->capacity)
@@ -109,7 +133,14 @@ namespace RingBuffNs
 		return numBytes;
 	}
 	
-	uint32_t RingBuff::Write(const char *string)
+	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes)
+	{
+		// Simplified overload of Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic),
+		// default behaviour is to only write to buffer if all elements will fit
+		return this->Write(buff, numBytes, ReadWriteLogic::ALL);
+	}
+
+	uint32_t RingBuff::Write(const char *string, ReadWriteLogic writeLogic)
 	{
 		if(!this->initComplete)
 			return 0;
@@ -131,8 +162,10 @@ namespace RingBuffNs
 
 		if(nullFound)
 		{
-			// Null has been found, valid string
-			return this->Write((const uint8_t*)string, x);
+			// Null has been found, valid string, write to buffer, but only
+			// if all data can be written
+			//std::cout << "Null found! Writing '" << x << "' elements." << std::endl;
+			return this->Write((const uint8_t*)string, x, ReadWriteLogic::ALL);
 		}
 		else
 		{
@@ -141,6 +174,13 @@ namespace RingBuffNs
 			//std::cout << "Null not found!" << std::endl;
 			return 0;
 		}
+	}
+
+	uint32_t RingBuff::Write(const char *string)
+	{
+		// Simplified overload of Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic),
+		// default behaviour is to only write to buffer if all elements will fit
+		return this->Write(string, ReadWriteLogic::ALL);
 	}
 
 	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
