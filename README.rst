@@ -6,10 +6,13 @@ RingBuff-Cpp
 A C++ ring (aka circular, FIFO) buffer object designed for embedded applications.
 ---------------------------------------------------------------------------------
 
+.. image:: https://api.travis-ci.org/gbmhunter/RingBuff-Cpp.png?branch=master   
+	:target: https://travis-ci.org/gbmhunter/RingBuff-Cpp
+
 - Author: gbmhunter <gbmhunter@gmail.com> (http://www.cladlab.com)
 - First Ever Commit: 2013-07-30
 - Last Modified: 2014-07-29
-- Version: v2.2.2.0
+- Version: v2.2.2.1
 - Company: CladLabs
 - Project: Free Code Libraries
 - Language: C++
@@ -63,6 +66,7 @@ Changelog
 ======== ========== ===================================================================================================
 Version  Date       Comment
 ======== ========== ===================================================================================================
+v2.2.2.1 2014/07/29 Added TravisCI build passing/failed image to README, closes #23.
 v2.2.2.0 2014/07/29 Added 'RingBuff::IsData()' and added relevant unit tests, closes #18. Added 'uint8_t RingBuff::Read()' and relevant unit tests, closes #17. Changed 'RingBuff::IsInitComplete()' to 'IsInitSuccess()', as complete suggests it could still be running, closes #16.
 v2.2.1.0 2014/07/28 Fixed bug where 'RingBuff::Write(char* string)' will write partial messages even if buffer is not large enough, closes #19. Added ability to write only if all data will fit, or as much as possible, closes #20.
 v2.2.0.0 2014/07/25 Added '.travis.yml' file for TravisCI integration, closes #4.
