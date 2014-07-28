@@ -2,7 +2,7 @@
 //! @file 				RingBuff.cpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified		2014-07-25
+//! @last-modified		2014-07-29
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -48,31 +48,31 @@ namespace RingBuffNs
 		if(this->buffMemPtr == NULL)
 		{
 			// Memory allocation failed
-			this->initComplete = false;
+			this->isInitSuccess = false;
 			return;
 		}
 		
 		// Init completed successfully
-		this->initComplete = true;
+		this->isInitSuccess = true;
 	}
 	
 	RingBuff::~RingBuff()
 	{
-		if(!this->initComplete)
+		if(!this->isInitSuccess)
 			return;
 
 		// Free memory allocated in constructor
 		free(this->buffMemPtr);
 	}
 
-	bool RingBuff::IsInitComplete() const
+	bool RingBuff::IsInitSuccess() const
 	{
-		return this->initComplete;
+		return this->isInitSuccess;
 	}
  
 	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic)
 	{
-		if(!this->initComplete)
+		if(!this->isInitSuccess)
 			return 0;
 
 		//std::cout << "numBytes = '" << numBytes << "' .numElements = '" << this->numElements << "'." << std::endl;
@@ -119,8 +119,6 @@ namespace RingBuffNs
 			// Increment the number of elements
 			this->numElements++;
 
-
-
 			// Check for wrap-around
 			if(this->headPos == this->capacity)
 			{
@@ -142,7 +140,7 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Write(const char *string, ReadWriteLogic writeLogic)
 	{
-		if(!this->initComplete)
+		if(!this->isInitSuccess)
 			return 0;
 
 		bool nullFound = false;
@@ -162,18 +160,26 @@ namespace RingBuffNs
 
 		if(nullFound)
 		{
-			// Null has been found, valid string, write to buffer, but only
-			// if all data can be written
-			//std::cout << "Null found! Writing '" << x << "' elements." << std::endl;
-			return this->Write((const uint8_t*)string, x, ReadWriteLogic::ALL);
+			// Null has been found with limits of buffer capacity, valid string, write to buffer
+			std::cout << "Null found! Writing '" << x << "' elements." << std::endl;
+			return this->Write((const uint8_t*)string, x, writeLogic);
 		}
 		else
 		{
-			// Null has not be found, either string was not null-terminated, or was too large
-			// to fit in buffer, nothing written to buffer
-			//std::cout << "Null not found!" << std::endl;
-			return 0;
+			// Null has not be found within limits of buffer capacity, either string was not null-terminated, or was too large
+			// to fit in buffer completely.
+			std::cout << "Null not found!" << std::endl;
+
+			// In this case, only write stuff if ReadWriteLogic is ANY
+			if(writeLogic == ReadWriteLogic::ANY)
+				return this->Write((const uint8_t*)string, this->capacity, writeLogic);
+			else if(writeLogic == ReadWriteLogic::ALL)
+				// Since we know the string cannot fit in the buffer, return 0 here
+				return 0;
 		}
+
+		// If code gets here something bad has happened
+		return 0;
 	}
 
 	uint32_t RingBuff::Write(const char *string)
@@ -185,7 +191,7 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
 	{
-		if(!this->initComplete)
+		if(!this->isInitSuccess)
 			return 0;
 
 		uint32_t i;
@@ -224,9 +230,26 @@ namespace RingBuffNs
 		return numBytes;
 	}
 
+	uint8_t RingBuff::Read()
+	{
+		if(!this->isInitSuccess)
+			return 0;
+
+		if(!this->IsData())
+			return 0;
+
+		// There is data present, so read out
+		// 1 element
+		uint8_t data;
+		RingBuff::Read(&data, 1);
+
+		// Return data element (note that this could be 0)
+		return data;
+	}
+
 	void RingBuff::Clear()
 	{
-		if(!this->initComplete)
+		if(!this->isInitSuccess)
 			return;
 
 		// Does not 0 data, as this does not matter,
@@ -238,7 +261,7 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Capacity() const
 	{
-		if(!this->initComplete)
+		if(!this->isInitSuccess)
 			return 0;
 
 		// Just return the saved size of the buffer
@@ -248,14 +271,29 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::NumElements() const
 	{
-		if(!this->initComplete)
+		if(!this->isInitSuccess)
 			return 0;
 
 		return this->numElements;
 	}
 
+	bool RingBuff::IsData() const
+	{
+		if(!this->isInitSuccess)
+			return 0;
+
+		// Return true if there are any data elements currently in the buffer
+		if(this->numElements > 0)
+			return true;
+		else
+			return false;
+	}
+
 	bool RingBuff::Resize(uint32_t newCapacity)
 	{
+		if(!this->isInitSuccess)
+			return 0;
+
 		// First, shuffle all data backwards so that tailPos is at 0
 		// this makes resizing easier
 		this->ShiftElementsSoTailPosIsZero();

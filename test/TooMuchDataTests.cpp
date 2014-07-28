@@ -24,7 +24,7 @@ namespace RingBuffTest
 			// Make buffer with 10 bytes of memory
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitComplete())
+			if(!ringBuff.IsInitSuccess())
 				CHECK(false);
 
 			// Insert characters

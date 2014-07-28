@@ -2,7 +2,7 @@
 //! @file 				RingBuff.hpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified		2014-07-25
+//! @last-modified		2014-07-29
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -68,7 +68,7 @@ namespace RingBuffNs
 
 			//! @brief		Use this to check if the initialisation in the constructor was successful.
 			//! @returns	True if initialisation was successful, otherwise false.
-			bool IsInitComplete() const;
+			bool IsInitSuccess() const;
 			
 			//! @brief		Writes a number of bytes to the ring buffer.
 			//! @details	Will return early if there is no more space left in the buffer. Does
@@ -108,6 +108,15 @@ namespace RingBuffNs
 			//!				is false.
 			uint32_t Read(uint8_t* buff, uint32_t numBytes);
 			
+			//! @brief		Reads a single element from the ring buffer, returns 0 if no element exists.
+			//! @returns	The value of the data element read from the buffer, or 0 if no data exists
+			//!				(i.e. buffer is empty).
+			//! @warning	There is no way to tell from calling Read() if it had retrieved an element of
+			//!				value '0' from the buffer, or it returned 0 because there was no data in the
+			//!				buffer to read. For this reason if it best to check that there is data in the
+			//!				buffer by calling IsData() before calling this method.
+			uint8_t Read();
+
 			//! @brief		Clears all data in the ring buffer.
 			//! @details	Does not actually 0 data as this is not required, just sets tailPos = headPos.
 			void Clear();
@@ -119,6 +128,11 @@ namespace RingBuffNs
 			//! @brief		Returns the number of elements currently in the buffer. Capacity() returns the capacity of
 			//!				the buffer.
 			uint32_t NumElements() const;
+
+			//! @brief		Allows the user to quickly check if there is any data in the buffer.
+			//! @returns	True is there is 1 or more data elements in the buffer, otherwise false.
+			//! @sa			NumElements().
+			bool IsData() const;
 
 			//! @brief		Attempts to resize the buffer memory.
 			//! @details	If the buffer size is increased, all current data will be preserved. If the buffer
@@ -143,7 +157,7 @@ namespace RingBuffNs
 
 			//! @brief		Set to true by the constructor once initialisation is complete.
 			//! @details	Used by most methods to prevent errors if initialisation failed.
-			bool initComplete;
+			bool isInitSuccess;
 		
 			//! @brief		Pointer to buffer. Memory allocated in constructor.
 			uint8_t* buffMemPtr;

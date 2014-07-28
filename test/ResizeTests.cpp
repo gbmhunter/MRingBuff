@@ -58,7 +58,7 @@ namespace RingBuffTest
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitComplete())
+			if(!ringBuff.IsInitSuccess())
 				CHECK(false);
 
 			// Insert 5 characters
@@ -114,7 +114,7 @@ namespace RingBuffTest
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitComplete())
+			if(!ringBuff.IsInitSuccess())
 				CHECK(false);
 
 			// Insert 5 characters
