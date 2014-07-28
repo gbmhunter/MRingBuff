@@ -161,14 +161,14 @@ namespace RingBuffNs
 		if(nullFound)
 		{
 			// Null has been found with limits of buffer capacity, valid string, write to buffer
-			std::cout << "Null found! Writing '" << x << "' elements." << std::endl;
+			//std::cout << "Null found! Writing '" << x << "' elements." << std::endl;
 			return this->Write((const uint8_t*)string, x, writeLogic);
 		}
 		else
 		{
 			// Null has not be found within limits of buffer capacity, either string was not null-terminated, or was too large
 			// to fit in buffer completely.
-			std::cout << "Null not found!" << std::endl;
+			//std::cout << "Null not found!" << std::endl;
 
 			// In this case, only write stuff if ReadWriteLogic is ANY
 			if(writeLogic == ReadWriteLogic::ANY)
