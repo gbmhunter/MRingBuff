@@ -11,8 +11,8 @@ A C++ ring (aka circular, FIFO) buffer object designed for embedded applications
 
 - Author: gbmhunter <gbmhunter@gmail.com> (http://www.cladlab.com)
 - First Ever Commit: 2013-07-30
-- Last Modified: 2014-07-29
-- Version: v2.2.3.0
+- Last Modified: 2014-07-30
+- Version: v2.2.3.1
 - Company: CladLabs
 - Project: Free Code Libraries
 - Language: C++
@@ -29,6 +29,7 @@ Description
 RingBuff-Cpp is a ring (aka circular or FIFO) buffer object designed for use in embedded applications. 
 
 Features:
+
 - Dynamic allocation and resize capabilities (with data preservation)
 - Automatic memory management
 - Embedded (microcontroller) support
@@ -66,6 +67,7 @@ Changelog
 ======== ========== ===================================================================================================
 Version  Date       Comment
 ======== ========== ===================================================================================================
+v2.2.3.1 2014/07/30 Fixed the bullet points under 'Features' in README, closes #24.
 v2.2.3.0 2014/07/29	Removed references to 'std::cout' to fix failing build.
 v2.2.2.1 2014/07/29 Added TravisCI build passing/failed image to README, closes #23.
 v2.2.2.0 2014/07/29 Added 'RingBuff::IsData()' and added relevant unit tests, closes #18. Added 'uint8_t RingBuff::Read()' and relevant unit tests, closes #17. Changed 'RingBuff::IsInitComplete()' to 'IsInitSuccess()', as complete suggests it could still be running, closes #16.
