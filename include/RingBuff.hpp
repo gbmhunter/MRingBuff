@@ -2,7 +2,7 @@
 //! @file 				RingBuff.hpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified		2014-07-29
+//! @last-modified		2014-08-01
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -101,6 +101,11 @@ namespace RingBuffNs
 			//!	@details	writeLogic set to ALL.
 			uint32_t Write(const char *string);
 
+			//! @brief		Writes a single char to the ring buffer.
+			//! @returns	True if write was successful, otherwise false (i.e. buffer was full, or buffer
+			//!				did not initialise successfully).
+			bool Write(char charToWrite);
+
 			//! @brief		Reads up to a number of bytes from the ring buffer.
 			//! @details	Will read numBytes of data, unless there is not enough data to read, in which case
 			//!				returns early.
@@ -134,12 +139,20 @@ namespace RingBuffNs
 			//! @sa			NumElements().
 			bool IsData() const;
 
+			//! @brief		Allows the user to quickly check if there is any space in the data to write
+			//!				more elements.
+			//! @returns	True if there is at least one element available to write to, otherwise false. Returns
+			//!				false regardless if buffer initialisation wasn't successful.
+			//! @sa			IsData().
+			bool IsSpace() const;
+
 			//! @brief		Attempts to resize the buffer memory.
 			//! @details	If the buffer size is increased, all current data will be preserved. If the buffer
 			//!				size is decreased, the largest amount of data possible will be preserved, starting
 			//!				with the newest data written to the buffer.
 			//! @param		newCapacity		The new capacity you wish to resize the buffer memory to.
 			//! @returns	True is resize was successful (and Capacity() will return new value), otherwise false.
+			//!				Returns false regardless if buffer initialisation wasn't successful.
 			bool Resize(uint32_t newCapacity);
 
 			//===============================================================================================//

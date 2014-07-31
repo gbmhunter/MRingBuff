@@ -189,6 +189,20 @@ namespace RingBuffNs
 		return this->Write(string, ReadWriteLogic::ALL);
 	}
 
+	bool RingBuff::Write(char charToWrite)
+	{
+		if(!this->isInitSuccess)
+			return false;
+
+		// Write a single byte to the buffer, if there is space.
+		if(this->Write((uint8_t*)&charToWrite, 1, ReadWriteLogic::ALL) == 1)
+			// Byte was written to buffer successfully
+			return true;
+		else
+			// Byte was not written to buffer successfully
+			return false;
+	}
+
 	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
 	{
 		if(!this->isInitSuccess)
@@ -287,6 +301,20 @@ namespace RingBuffNs
 			return true;
 		else
 			return false;
+	}
+
+	bool RingBuff::IsSpace() const
+	{
+		if(!this->isInitSuccess)
+			return false;
+
+		if(this->numElements < this->capacity)
+			// There is at least one element free in buffer
+			return true;
+		else
+			// There are no elements free in buffer
+			return false;
+
 	}
 
 	bool RingBuff::Resize(uint32_t newCapacity)
