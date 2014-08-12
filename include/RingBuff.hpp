@@ -2,7 +2,7 @@
 //! @file 				RingBuff.hpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified		2014-08-01
+//! @last-modified		2014-08-12
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -106,14 +106,22 @@ namespace RingBuffNs
 			//!				did not initialise successfully).
 			bool Write(char charToWrite);
 
-			//! @brief		Reads up to a number of bytes from the ring buffer.
+			//! @brief		Reads (but DOESN'T remove) up to numBytes from the ring buffer.
+			//! @details	Will read numBytes of data, unless there is not enough data to read, in which case
+			//!				returns early.
+			//! @returns	Number of bytes read (which could be from 0 to numBytes). Returns 0 if IsInitComplete()
+			//!				is false.
+			//! @sa			Read().
+			uint32_t Peek(uint8_t* buff, uint32_t numBytes);
+
+			//! @brief		Reads and removes up to #numBytes from the ring buffer.
 			//! @details	Will read numBytes of data, unless there is not enough data to read, in which case
 			//!				returns early.
 			//! @returns	Number of bytes read (which could be from 0 to numBytes). Returns 0 if IsInitComplete()
 			//!				is false.
 			uint32_t Read(uint8_t* buff, uint32_t numBytes);
 			
-			//! @brief		Reads a single element from the ring buffer, returns 0 if no element exists.
+			//! @brief		Reads and removes a single element from the ring buffer, returns 0 if no element exists.
 			//! @returns	The value of the data element read from the buffer, or 0 if no data exists
 			//!				(i.e. buffer is empty).
 			//! @warning	There is no way to tell from calling Read() if it had retrieved an element of

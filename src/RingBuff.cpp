@@ -2,7 +2,7 @@
 //! @file 				RingBuff.cpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
 //! @created 			2013-07-30
-//! @last-modified		2014-07-29
+//! @last-modified		2014-08-12
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -39,16 +39,18 @@ namespace RingBuffNs
 		capacity(capacity),
 		headPos(0),
 		tailPos(0),
-		numElements(0)
+		numElements(0),
+		isInitSuccess(false)
 	{			
 		// Create space for buffer, also 0 buffer (although
 		// not strictly needed)
-		this->buffMemPtr = (uint8_t*)calloc(capacity, sizeof(char));
+		//this->buffMemPtr = (uint8_t*)calloc(capacity, sizeof(char));
+		this->buffMemPtr = new uint8_t[100];
 		
-		if(this->buffMemPtr == NULL)
+		// In an embedded environment no exception may be thrown for bad alloc
+		if(this->buffMemPtr == nullptr)
 		{
-			// Memory allocation failed
-			this->isInitSuccess = false;
+			// Memory allocation failed :-O
 			return;
 		}
 		
@@ -62,7 +64,7 @@ namespace RingBuffNs
 			return;
 
 		// Free memory allocated in constructor
-		free(this->buffMemPtr);
+		delete[] this->buffMemPtr;
 	}
 
 	bool RingBuff::IsInitSuccess() const
@@ -90,14 +92,11 @@ namespace RingBuffNs
 				return 0;
 			}
 		}
-
-		//std::cout << "Code makes it to 2!" << std::endl;
 	
-		int i;
 		const uint8_t * currPos;
 		currPos = buff;
 		 
-		for(i = 0; i < numBytes; i++)
+		for(uint32_t i = 0; i < numBytes; i++)
 		{
 			if(this->numElements >= this->capacity)
 			{
@@ -133,6 +132,9 @@ namespace RingBuffNs
 	
 	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes)
 	{
+		if(!this->isInitSuccess)
+			return 0;
+
 		// Simplified overload of Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic),
 		// default behaviour is to only write to buffer if all elements will fit
 		return this->Write(buff, numBytes, ReadWriteLogic::ALL);
@@ -184,6 +186,9 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Write(const char *string)
 	{
+		if(!this->isInitSuccess)
+			return 0;
+
 		// Simplified overload of Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic),
 		// default behaviour is to only write to buffer if all elements will fit
 		return this->Write(string, ReadWriteLogic::ALL);
@@ -203,13 +208,64 @@ namespace RingBuffNs
 			return false;
 	}
 
+	uint32_t RingBuff::Peek(uint8_t *buff, uint32_t numBytes)
+	{
+		if(!this->isInitSuccess)
+			//! @todo Add assert()
+			return 0;
+
+		uint32_t i;
+
+		// Remembers the current position in buff, the buffer to write to
+		uint32_t currPosInBuff = 0;
+
+		// Remebers where we are currently reading from in the RingBuff
+		uint32_t peekTailPos = this->tailPos;
+
+		// We don't want to adjust the tail as we would do in the case of
+		// a Read().
+		for(i = 0; i < numBytes; i++)
+		{
+
+			// Check if there is any (more) data is available
+			if(i >= this->numElements)
+			{
+				// No more data available, return the number of elements
+				// we managed to read
+				return i;
+			}
+
+			// Read one byte from the FIFO buffer
+			buff[currPosInBuff++] = this->buffMemPtr[peekTailPos++];
+
+			// Decrement the number of elements
+			//this->numElements--;
+
+			// Increment the peek tail pos
+			//peekTailPos++;
+
+			 // Increment the tail
+			//this->tailPos++;
+
+			// Check for wrap-around
+			if(peekTailPos == this->capacity)
+			{
+				// Reset peek tail
+				peekTailPos = 0;
+			}
+		}
+
+		// All bytes were read
+		return numBytes;
+	}
+
 	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
 	{
 		if(!this->isInitSuccess)
 			return 0;
 
 		uint32_t i;
-		uint8_t *currPos;
+		uint8_t * currPos;
 		currPos = buff;
 
 		for(i = 0; i < numBytes; i++)
@@ -331,7 +387,7 @@ namespace RingBuffNs
 		this->buffMemPtr = (uint8_t*)realloc(this->buffMemPtr, newCapacity);
 
 		// Make sure realloc() was successful
-		if(this->buffMemPtr != NULL)
+		if(this->buffMemPtr != nullptr)
 		{
 			// Update headPos if old headpos is larger than new capacity, as headPos will be
 			// currently out of range
@@ -359,6 +415,9 @@ namespace RingBuffNs
 
 	void RingBuff::ShiftElementsSoTailPosIsZero()
 	{
+		if(!this->isInitSuccess)
+			return;
+
 		uint32_t currNumElements = this->NumElements();
 
 		// Create a temp buffer memory space for copying
