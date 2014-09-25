@@ -21,7 +21,7 @@
 #include <stdlib.h>		// calloc();
 
 //===== USER LIBRARIES =====//
-#include "MAssert/api/MassertApi.hpp"	// M_ASSERT()
+#include "MAssert/api/MAssertApi.hpp"	// M_ASSERT()
 
 //===== USER SOURCE =====//
 #include "../include/Config.hpp"

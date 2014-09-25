@@ -12,7 +12,7 @@ A C++ ring (aka circular, FIFO) buffer object designed for embedded applications
 - Author: gbmhunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 - First Ever Commit: 2013-07-30
 - Last Modified: 2014-09-26
-- Version: v2.4.1.0
+- Version: v2.4.2.0
 - Company: mbedded.ninja
 - Project: MToolkit module.
 - Language: C++
@@ -67,6 +67,7 @@ Changelog
 ========= ========== ===================================================================================================
 Version   Date       Comment
 ========= ========== ===================================================================================================
+v2.4.2.0  2014-09-26 Fixed 'MAssertApi.hpp' include filename (was 'MassertApi.hpp') in 'RingBuff.cpp', closes #44.
 v2.4.1.0  2014-09-26 Removed 'MRingBuff::isInitSuccess' variable and now uses asserts instead, closes #43. Fixed the 17 unit tests which are failing since the switch from using 'UnitTest++' to 'MUnitTest', closes #42.
 v2.4.0.0  2014-09-25 Removed dependence on UnitTest++ and now uses MUnitTest from an external source instead, closes #39. Updated all URLS in code from 'www.cladlab.com' to 'www.mbedded.ninja', closes #41.
 v2.3.1.1  2014-09-25 Fixed image link to TravisCI in README, closes #40.
