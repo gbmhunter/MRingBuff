@@ -12,7 +12,7 @@ A C++ ring (aka circular, FIFO) buffer object designed for embedded applications
 - Author: gbmhunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 - First Ever Commit: 2013-07-30
 - Last Modified: 2014-09-25
-- Version: v2.3.1.1
+- Version: v2.4.0.0
 - Company: mbedded.ninja
 - Project: MToolkit module.
 - Language: C++
@@ -67,6 +67,7 @@ Changelog
 ========= ========== ===================================================================================================
 Version   Date       Comment
 ========= ========== ===================================================================================================
+v2.4.0.0  2014-09-25 Removed dependence on UnitTest++ and now uses MUnitTest from an external source instead, closes #39. Updated all URLS in code from 'www.cladlab.com' to 'www.mbedded.ninja', closes #41.
 v2.3.1.1  2014-09-25 Fixed image link to TravisCI in README, closes #40.
 v2.3.1.0  2014-09-25 Fixed unit tests so they fit the format 'CHECK_EQUAL(actual, expected)'. Many had actual and expected around the wrong way, closes #38. Fixed name of module in README.
 v2.3.0.0  2014-08-12 Added method 'RingBuff::Peek()' that allows you to read data from the buffer without removing it, added associated unit tests, closes #34. Changed i variable in 'RingBuff::Write()' from int to uint32_t, and declared in for loop, closes #35. Made 'RingBuff' constructor/destructor use 'new[]' instead of calloc and delete[] instead of free (i.e. the C++ way), closes #33. Set 'RingBuff::isInitSuccess' to false in the constructors initialiser list, closes #32. Converted usages of 'NULL' to 'nullptr' when used in a pointer context, closes #31.

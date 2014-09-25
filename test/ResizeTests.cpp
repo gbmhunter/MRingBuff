@@ -1,24 +1,27 @@
 //!
 //! @file 			ResizeTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @created		2014/07/25
-//! @last-modified 	2014/07/25
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
+//! @created		2014-07-25
+//! @last-modified 	2014-09-25
 //! @brief 			Tests that the RingBuff::Resize() method works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(ResizeTests)
+	MTEST_GROUP(ResizeTests)
 	{
 
-		TEST(BasicResizeWithNoDataTest)
+		MTEST(BasicResizeWithNoDataTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -30,7 +33,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(ringBuff.NumElements(), 0);
 		}
 
-		TEST(IncreaseResizeWithNoWrapTest)
+		MTEST(IncreaseResizeWithNoWrapTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -54,7 +57,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(ringBuff.NumElements(), 0);
 		}
 
-		TEST(IncreaseResizeWithWrapTest)
+		MTEST(IncreaseResizeWithWrapTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -86,7 +89,7 @@ namespace RingBuffTest
 
 		}
 
-		TEST(DecreaseResizeWithNoWrapTest)
+		MTEST(DecreaseResizeWithNoWrapTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -110,7 +113,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(ringBuff.NumElements(), 0);
 		}
 
-		TEST(DecreaseResizeWithWrapTest)
+		MTEST(DecreaseResizeWithWrapTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -142,5 +145,5 @@ namespace RingBuffTest
 
 		}
 
-	} // SUITE(ResizeTests)
-} // namespace RingBuffTest
+	} // GROUP(ResizeTests)
+} // namespace RingBuffTestsNs

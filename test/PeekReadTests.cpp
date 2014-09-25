@@ -1,25 +1,27 @@
 //!
 //! @file 			PeekReadTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-08-12
-//! @last-modified 	2014-08-12
+//! @last-modified 	2014-09-25
 //! @brief 			Tests that RingBuff::Peek() works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
-#include <cstring>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(PeekReadTests)
+	MTEST_GROUP(PeekReadTests)
 	{
 
-		TEST(PeekReadTest)
+		MTEST(PeekReadTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -51,5 +53,5 @@ namespace RingBuffTest
 
 		}
 
-	} // SUITE(PeekReadTests)
-} // namespace RingBuffTest
+	} // GROUP(PeekReadTests)
+} // namespace RingBuffTestsNs

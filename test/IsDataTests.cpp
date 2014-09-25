@@ -1,25 +1,28 @@
 //!
 //! @file 			IsDataTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @created		2014/07/29
-//! @last-modified 	2014/07/29
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
+//! @created		2014-07-29
+//! @last-modified 	2014-09-25
 //! @brief 			Tests that the method RingBuff::IsData() works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
 #include <cstring>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(IsDataTests)
+MTEST_GROUP(IsDataTests)
 	{
 
-		TEST(IsDataTest)
+		MTEST(IsDataTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -46,5 +49,5 @@ namespace RingBuffTest
 
 		}
 
-	} // SUITE(IsDataTests)
-} // namespace RingBuffTest
+	} // GROUP(IsDataTests)
+} // namespace RingBuffTestsNs

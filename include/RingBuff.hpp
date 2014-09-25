@@ -1,8 +1,8 @@
 //!
 //! @file 				RingBuff.hpp
-//! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
+//! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created 			2013-07-30
-//! @last-modified		2014-08-12
+//! @last-modified		2014-08-25
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -15,8 +15,8 @@
 //======================================== HEADER GUARD =========================================//
 //===============================================================================================//
 
-#ifndef RING_BUFF_RING_BUFF_H
-#define RING_BUFF_RING_BUFF_H
+#ifndef MRING_BUFF_RING_BUFF_H
+#define MRING_BUFF_RING_BUFF_H
 
 //===============================================================================================//
 //========================================== INCLUDES ===========================================//
@@ -209,6 +209,6 @@ namespace RingBuffNs
 	
 } // namespace RingBuffNs
 
-#endif // #ifndef RING_BUFF_RING_BUFF_H
+#endif // #ifndef MRING_BUFF_RING_BUFF_H
 
 // EOF

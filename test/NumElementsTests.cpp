@@ -1,24 +1,27 @@
 //!
 //! @file 			NumElementsTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @created		2014/07/25
-//! @last-modified 	2014/07/25
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
+//! @created		2014-07-25
+//! @last-modified 	2014-09-25
 //! @brief 			Tests that the RingBuff::NumElements() method works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(NumElementsTests)
+	MTEST_GROUP(NumElementsTests)
 	{
 
-		TEST(BasicNumElementsTest)
+		MTEST(BasicNumElementsTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -29,7 +32,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(ringBuff.NumElements(), 7);
 		}
 
-		TEST(WrappingNumElementsTest)
+		MTEST(WrappingNumElementsTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -49,5 +52,5 @@ namespace RingBuffTest
 			CHECK_EQUAL(ringBuff.NumElements(), 7);
 		}
 
-	} // SUITE(NumElementsTests)
-} // namespace RingBuffTest
+	} // GROUP(NumElementsTests)
+} // namespace RingBuffTestsNs

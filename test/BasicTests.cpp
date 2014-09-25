@@ -1,25 +1,27 @@
 //!
 //! @file 			BasicTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @created		2014/07/24
-//! @last-modified 	2014/07/24
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
+//! @created		2014-07-24
+//! @last-modified 	2014-09-25
 //! @brief 			Contains basic tests.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(BasicTests)
+	MTEST_GROUP(BasicTests)
 	{
 
-
-		TEST(ConstructorWorksTest)
+		MTEST(ConstructorWorksTest)
 		{
 
 			RingBuffNs::RingBuff ringBuff(100);
@@ -28,7 +30,7 @@ namespace RingBuffTest
 			CHECK(true);
 		}
 
-		TEST(BasicCapacityTest)
+		MTEST(BasicCapacityTest)
 		{
 			RingBuffNs::RingBuff ringBuff(50);
 
@@ -36,7 +38,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(ringBuff.Capacity(), 50);
 		}
 
-		TEST(BasicReadWriteTest)
+		MTEST(BasicReadWriteTest)
 		{
 
 			RingBuffNs::RingBuff ringBuff(100);
@@ -51,7 +53,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(readBuff, "testing");
 		}
 
-		TEST(BasicReadWhenEmptyTest)
+		MTEST(BasicReadWhenEmptyTest)
 		{
 			RingBuffNs::RingBuff ringBuff(100);
 
@@ -63,7 +65,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(readBuff[0], 0);
 		}
 		
-		TEST(ClearTest)
+		MTEST(ClearTest)
 		{
 			RingBuffNs::RingBuff ringBuff(100);
 
@@ -80,7 +82,7 @@ namespace RingBuffTest
 			CHECK_EQUAL(readBuff, "");
 		}
 
-		TEST(MultipleWritesThenReadTest)
+		MTEST(MultipleWritesThenReadTest)
 		{
 			RingBuffNs::RingBuff ringBuff(100);
 
@@ -97,5 +99,5 @@ namespace RingBuffTest
 			CHECK_EQUAL(readBuff, "12345678");
 		}
 
-	} // SUITE(BasicTests)
-} // namespace RingBuffTest
+	} // GROUP(BasicTests)
+} // namespace RingBuffTestsNs

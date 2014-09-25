@@ -1,25 +1,27 @@
 //!
 //! @file 			WriteStringTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-07-28
 //! @last-modified 	2014-09-25
 //! @brief 			Tests that Write(char* string) works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
-#include <cstring>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(WriteStringTests)
+	MTEST_GROUP(WriteStringTests)
 	{
 
-		TEST(WriteStringTest)
+		MTEST(WriteStringTest)
 		{
 			// Make buffer with 10 bytes of memory
 			RingBuffNs::RingBuff ringBuff(10);
@@ -43,7 +45,7 @@ namespace RingBuffTest
 
 		}
 
-		TEST(WriteToMuchTest)
+		MTEST(WriteToMuchTest)
 		{
 			// Make buffer with 10 bytes of memory
 			RingBuffNs::RingBuff ringBuff(10);
@@ -71,5 +73,5 @@ namespace RingBuffTest
 
 		}
 
-	} // SUITE(WriteStringTests)
-} // namespace RingBuffTest
+	} // GROUP(WriteStringTests)
+} // namespace RingBuffTestsNs

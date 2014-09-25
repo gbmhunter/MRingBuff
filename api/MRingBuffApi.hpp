@@ -1,8 +1,8 @@
 //!
 //! @file 				RingBuffApi.hpp
-//! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
+//! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created 			2013-07-30
-//! @last-modified		2014-07-24
+//! @last-modified		2014-09-25
 //! @brief 				This header file includes all files necessary for the user to use the RingBuff library.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -15,11 +15,11 @@
 //======================================== HEADER GUARD =========================================//
 //===============================================================================================//
 
-#ifndef RING_BUFF_API_H
-#define RING_BUFF_API_H
+#ifndef MRING_BUFF_MRING_BUFF_API_H
+#define MRING_BUFF_MRING_BUFF_API_H
 
 #include "../include/RingBuff.hpp"
 
-#endif // #ifndef RING_BUFF_API_H
+#endif // #ifndef MRING_BUFF_MRING_BUFF_API_H
 
 // EOF

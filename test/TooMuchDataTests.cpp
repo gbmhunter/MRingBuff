@@ -1,25 +1,27 @@
 //!
 //! @file 			TooMuchDataTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @created		2014/07/25
-//! @last-modified 	2014/07/25
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
+//! @created		2014-07-25
+//! @last-modified 	2014-09-25
 //! @brief 			Tests that the buffer behaves correctly when 'too much' data is written to it.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
-#include <cstring>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(TooMuchDataTests)
+	MTEST_GROUP(TooMuchDataTests)
 	{
 
-		TEST(TooMuchDataTest)
+		MTEST(TooMuchDataTest)
 		{
 			// Make buffer with 10 bytes of memory
 			RingBuffNs::RingBuff ringBuff(10);
@@ -53,5 +55,5 @@ namespace RingBuffTest
 
 		}
 
-	} // SUITE(LotsOfDataTests)
-} // namespace RingBuffTest
+	} // GROUP(TooMuchDataTests)
+} // namespace RingBuffTestsNs

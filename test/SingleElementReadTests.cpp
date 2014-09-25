@@ -1,25 +1,27 @@
 //!
 //! @file 			SingleElementReadTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @created		2014/07/29
-//! @last-modified 	2014/07/29
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
+//! @created		2014-07-29
+//! @last-modified 	2014-09-25
 //! @brief 			Tests that the method 'uint8_t RingBuff::Read()' works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
-#include <cstring>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(SingleElementReadTests)
+	MTEST_GROUP(SingleElementReadTests)
 	{
 
-		TEST(SingleElementReadTest1)
+		MTEST(SingleElementReadTest1)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -47,7 +49,7 @@ namespace RingBuffTest
 
 		}
 
-		TEST(SingleElementReadTest2)
+		MTEST(SingleElementReadTest2)
 		{
 			RingBuffNs::RingBuff ringBuff(3);
 
@@ -75,5 +77,5 @@ namespace RingBuffTest
 
 		}
 
-	} // SUITE(SingleElementReadTests)
-} // namespace RingBuffTest
+	} // GROUP(SingleElementReadTests)
+} // namespace RingBuffTestsNs

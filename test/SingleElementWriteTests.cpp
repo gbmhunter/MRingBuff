@@ -1,25 +1,27 @@
 //!
 //! @file 			SingleElementWriteTests.cpp
-//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
-//! @created		2014/08/01
-//! @last-modified 	2014/08/01
+//! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
+//! @created		2014-08-01
+//! @last-modified 	2014-09-25
 //! @brief 			Tests that the method 'bool RingBuff::Write(char charToWrite)' works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
 
+//===== SYSTEM LIBRARIES =====//
 #include <stdio.h>
-#include <cstring>
 
-#include "../api/RingBuffApi.hpp"
+//===== USER LIBRARIES =====//
+#include "MUnitTest/api/MUnitTestApi.hpp"
 
-#include "../lib/UnitTest++/src/UnitTest++.h"
+//===== USER SOURCE =====//
+#include "../api/MRingBuffApi.hpp"
 
-namespace RingBuffTest
+namespace RingBuffTestsNs
 {
-	SUITE(SingleElementWriteTests)
+	MTEST_GROUP(SingleElementWriteTests)
 	{
 
-		TEST(SingleElementWriteTest1)
+		MTEST(SingleElementWriteTest1)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
@@ -46,7 +48,7 @@ namespace RingBuffTest
 
 		}
 
-		TEST(SingleElementReadTest2)
+		MTEST(SingleElementReadTest2)
 		{
 			RingBuffNs::RingBuff ringBuff(3);
 
@@ -75,5 +77,5 @@ namespace RingBuffTest
 
 		}
 
-	} // SUITE(SingleElementWriteTests)
-} // namespace RingBuffTest
+	} // GROUP(SingleElementWriteTests)
+} // namespace RingBuffTestsNs

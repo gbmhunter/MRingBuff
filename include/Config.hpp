@@ -1,6 +1,6 @@
 //!
 //! @file 				Config.hpp
-//! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.cladlab.com)
+//! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created 			2013-07-30
 //! @last-modified	2014-07-24
 //! @brief 				Configuration file for RingBuff.
