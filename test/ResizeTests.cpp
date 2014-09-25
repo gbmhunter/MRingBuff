@@ -26,8 +26,8 @@ namespace RingBuffTest
 				CHECK(false);
 
 			// Check num elements is calculated correctly
-			CHECK_EQUAL(20, ringBuff.Capacity());
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(ringBuff.Capacity(), 20);
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 		}
 
 		TEST(IncreaseResizeWithNoWrapTest)
@@ -50,8 +50,8 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff2, 4);
 
 			// Check data is still correct
-			CHECK_EQUAL("2345", readBuff2);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(readBuff2, "2345");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 		}
 
 		TEST(IncreaseResizeWithWrapTest)
@@ -81,8 +81,8 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff2, 7);
 
 			// Check num elements is calculated correctly
-			CHECK_EQUAL("1234567", readBuff2);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(readBuff2, "1234567");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 
@@ -106,8 +106,8 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff2, 5);
 
 			// Check data is still correct
-			CHECK_EQUAL("23456", readBuff2);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(readBuff2, "23456");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 		}
 
 		TEST(DecreaseResizeWithWrapTest)
@@ -137,8 +137,8 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff2, 5);
 
 			// Check num elements is calculated correctly
-			CHECK_EQUAL("12345", readBuff2);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(readBuff2, "12345");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 

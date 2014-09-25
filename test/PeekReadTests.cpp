@@ -35,19 +35,19 @@ namespace RingBuffTest
 			char readBuff[20];
 			ringBuff.Peek((uint8_t*)readBuff, 5);
 
-			CHECK_EQUAL("12345", readBuff);
+			CHECK_EQUAL(readBuff, "12345");
 
 			// Now make sure there are still 5 elements in the buffer
-			CHECK_EQUAL(5, ringBuff.NumElements());
+			CHECK_EQUAL(ringBuff.NumElements(), 5);
 
 			// Now read them out like usual to make sure they havn't been corrupted
 			memset(readBuff, '\0', sizeof(readBuff));
 			ringBuff.Read((uint8_t*)readBuff, 5);
 
-			CHECK_EQUAL("12345", readBuff);
+			CHECK_EQUAL(readBuff, "12345");
 
 			// Now make sure the elements are gone
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 

@@ -40,9 +40,9 @@ namespace RingBuffTest
 				x++;
 			}
 
-			CHECK_EQUAL(1, x);
-			CHECK_EQUAL("a", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(x, 1);
+			CHECK_EQUAL(readBuff, "a");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 
@@ -69,9 +69,9 @@ namespace RingBuffTest
 				x++;
 			}
 
-			CHECK_EQUAL(3, x);
-			CHECK_EQUAL("abc", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(x, 3);
+			CHECK_EQUAL(readBuff, "abc");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 

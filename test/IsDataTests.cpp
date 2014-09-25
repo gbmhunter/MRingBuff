@@ -40,9 +40,9 @@ namespace RingBuffTest
 				x++;
 			}
 
-			CHECK_EQUAL(5, x);
-			CHECK_EQUAL("12345", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(x, 5);
+			CHECK_EQUAL(readBuff, "12345");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 

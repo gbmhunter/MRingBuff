@@ -41,9 +41,9 @@ namespace RingBuffTest
 				x++;
 			}
 
-			CHECK_EQUAL(5, x);
-			CHECK_EQUAL("12345", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(x, 5);
+			CHECK_EQUAL(readBuff, "12345");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 
@@ -56,7 +56,7 @@ namespace RingBuffTest
 
 			// Insert characters
 			char * someChars = "12345";
-			CHECK_EQUAL(3, ringBuff.Write(someChars, RingBuffNs::RingBuff::ReadWriteLogic::ANY));
+			CHECK_EQUAL(ringBuff.Write(someChars, RingBuffNs::RingBuff::ReadWriteLogic::ANY), 3);
 
 			// Now read these out, only 3 should of been written
 			char readBuff[20];
@@ -69,9 +69,9 @@ namespace RingBuffTest
 				x++;
 			}
 
-			CHECK_EQUAL(3, x);
-			CHECK_EQUAL("123", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(x, 3);
+			CHECK_EQUAL(readBuff, "123");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 		}
 

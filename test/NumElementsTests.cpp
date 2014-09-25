@@ -26,7 +26,7 @@ namespace RingBuffTest
 			ringBuff.Write(someChars);
 
 			// Check num elements is calculated correctly
-			CHECK_EQUAL(7, ringBuff.NumElements());
+			CHECK_EQUAL(ringBuff.NumElements(), 7);
 		}
 
 		TEST(WrappingNumElementsTest)
@@ -46,7 +46,7 @@ namespace RingBuffTest
 			ringBuff.Write(someChars2);
 
 			// Check num elements is calculated correctly
-			CHECK_EQUAL(7, ringBuff.NumElements());
+			CHECK_EQUAL(ringBuff.NumElements(), 7);
 		}
 
 	} // SUITE(NumElementsTests)

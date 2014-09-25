@@ -33,7 +33,7 @@ namespace RingBuffTest
 			RingBuffNs::RingBuff ringBuff(50);
 
 			// Check capacity is calculated correctly
-			CHECK_EQUAL(50, ringBuff.Capacity());
+			CHECK_EQUAL(ringBuff.Capacity(), 50);
 		}
 
 		TEST(BasicReadWriteTest)
@@ -48,7 +48,7 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff, 8);
 
 			// Check read data is equal to written data
-			CHECK_EQUAL("testing", readBuff);
+			CHECK_EQUAL(readBuff, "testing");
 		}
 
 		TEST(BasicReadWhenEmptyTest)
@@ -60,7 +60,7 @@ namespace RingBuffTest
 			ringBuff.Read(readBuff, 8);
 
 			// Check buffer is still empty
-			CHECK_EQUAL(0, readBuff[0]);
+			CHECK_EQUAL(readBuff[0], 0);
 		}
 		
 		TEST(ClearTest)
@@ -77,7 +77,7 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff, 8);
 
 			// Check read data is empty
-			CHECK_EQUAL("", readBuff);
+			CHECK_EQUAL(readBuff, "");
 		}
 
 		TEST(MultipleWritesThenReadTest)
@@ -94,7 +94,7 @@ namespace RingBuffTest
 			readBuff[9] = '\0';
 
 			// Check read data is empty
-			CHECK_EQUAL("12345678", readBuff);
+			CHECK_EQUAL(readBuff, "12345678");
 		}
 
 	} // SUITE(BasicTests)

@@ -32,20 +32,20 @@ namespace RingBuffTest
 				// Insert 1 character
 				ringBuff.Write('a');
 
-				CHECK_EQUAL(true, ringBuff.IsSpace());
+				CHECK_EQUAL(ringBuff.IsSpace(), true);
 			}
 
 			// Should be 9 characters in buffer, lets write one more to fill it up
 			ringBuff.Write('a');
 
 			// Now there should be no more space!
-			CHECK_EQUAL(false, ringBuff.IsSpace());
+			CHECK_EQUAL(ringBuff.IsSpace(), false);
 
 			// Now lets read a single character to free up space again
 			ringBuff.Read();
 
 			// Now there should be space!
-			CHECK_EQUAL(true, ringBuff.IsSpace());
+			CHECK_EQUAL(ringBuff.IsSpace(), true);
 
 		}
 

@@ -34,8 +34,8 @@ namespace RingBuffTest
 			char readBuff[20];
 			ringBuff.Read((uint8_t*)readBuff, 5);
 
-			CHECK_EQUAL("12345", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(readBuff, "12345");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 			// Now insert 7 more, this should wrap around
 			char someChars2[] = "1234567";
@@ -45,8 +45,8 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff, 7);
 
 			// Check num elements is calculated correctly
-			CHECK_EQUAL("1234567", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(readBuff, "1234567");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 			ringBuff.Write(someChars2);
 
@@ -54,8 +54,8 @@ namespace RingBuffTest
 			ringBuff.Read((uint8_t*)readBuff, 7);
 
 			// Check num elements is calculated correctly
-			CHECK_EQUAL("1234567", readBuff);
-			CHECK_EQUAL(0, ringBuff.NumElements());
+			CHECK_EQUAL(readBuff, "1234567");
+			CHECK_EQUAL(ringBuff.NumElements(), 0);
 
 
 		}
