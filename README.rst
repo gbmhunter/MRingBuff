@@ -6,15 +6,15 @@ MRingBuff
 A C++ ring (aka circular, FIFO) buffer object designed for embedded applications.
 ---------------------------------------------------------------------------------
 
-.. image:: https://api.travis-ci.org/gbmhunter/MRingBuff.png?branch=master   
-	:target: https://travis-ci.org/gbmhunter/MRingBuff
+.. image:: https://api.travis-ci.org/mbedded-ninja/MRingBuff.png?branch=master   
+	:target: https://travis-ci.org/mbedded-ninja/MRingBuff
 
 - Author: gbmhunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 - First Ever Commit: 2013-07-30
 - Last Modified: 2014-09-25
-- Version: v2.3.1.0
+- Version: v2.3.1.1
 - Company: mbedded.ninja
-- Project: Free Code Libraries
+- Project: MToolkit module.
 - Language: C++
 - Compiler: GCC	
 - uC Model: Any
@@ -67,6 +67,7 @@ Changelog
 ========= ========== ===================================================================================================
 Version   Date       Comment
 ========= ========== ===================================================================================================
+v2.3.1.1  2014-09-25 Fixed image link to TravisCI in README, closes #40.
 v2.3.1.0  2014-09-25 Fixed unit tests so they fit the format 'CHECK_EQUAL(actual, expected)'. Many had actual and expected around the wrong way, closes #38. Fixed name of module in README.
 v2.3.0.0  2014-08-12 Added method 'RingBuff::Peek()' that allows you to read data from the buffer without removing it, added associated unit tests, closes #34. Changed i variable in 'RingBuff::Write()' from int to uint32_t, and declared in for loop, closes #35. Made 'RingBuff' constructor/destructor use 'new[]' instead of calloc and delete[] instead of free (i.e. the C++ way), closes #33. Set 'RingBuff::isInitSuccess' to false in the constructors initialiser list, closes #32. Converted usages of 'NULL' to 'nullptr' when used in a pointer context, closes #31.
 v2.2.4.0  2014-08-01 Added method 'RingBuff::Write(char myChar)' to easily write on character to the buffer, closes #25.  Added associated unit tests. Added method 'RingBuff::IsSpace()' that allows the user to quickly check if there is space to write more data, closes #26. Added associated unit tests.
