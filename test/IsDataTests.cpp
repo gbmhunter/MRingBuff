@@ -2,7 +2,7 @@
 //! @file 			IsDataTests.cpp
 //! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-07-29
-//! @last-modified 	2014-09-25
+//! @last-modified 	2014-09-26
 //! @brief 			Tests that the method RingBuff::IsData() works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
@@ -19,22 +19,19 @@
 
 namespace RingBuffTestsNs
 {
-MTEST_GROUP(IsDataTests)
+	MTEST_GROUP(IsDataTests)
 	{
 
 		MTEST(IsDataTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
-
 			// Insert 5 characters
-			char * someChars = "12345";
+			const char * someChars = "12345";
 			ringBuff.Write(someChars);
 
 			// Now read these out
-			char readBuff[20];
+			char readBuff[20] = {0};
 			uint8_t x = 0;
 
 			while(ringBuff.IsData())

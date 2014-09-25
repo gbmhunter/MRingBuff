@@ -2,7 +2,7 @@
 //! @file 			SingleElementReadTests.cpp
 //! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-07-29
-//! @last-modified 	2014-09-25
+//! @last-modified 	2014-09-26
 //! @brief 			Tests that the method 'uint8_t RingBuff::Read()' works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
@@ -24,9 +24,6 @@ namespace RingBuffTestsNs
 		MTEST(SingleElementReadTest1)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
-
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
 
 			// Insert 5 characters
 			char * someChars = "12345";
@@ -53,15 +50,12 @@ namespace RingBuffTestsNs
 		{
 			RingBuffNs::RingBuff ringBuff(3);
 
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
-
 			// Insert characters
 			char * someChars = "12345";
 			CHECK_EQUAL(ringBuff.Write(someChars, RingBuffNs::RingBuff::ReadWriteLogic::ANY), 3);
 
 			// Now read these out, only 3 should of been written
-			char readBuff[20];
+			char readBuff[20] = {0};
 			uint8_t x = 0;
 
 			while(ringBuff.IsData())

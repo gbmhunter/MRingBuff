@@ -2,7 +2,7 @@
 //! @file 			WriteStringTests.cpp
 //! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-07-28
-//! @last-modified 	2014-09-25
+//! @last-modified 	2014-09-26
 //! @brief 			Tests that Write(char* string) works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
@@ -26,9 +26,6 @@ namespace RingBuffTestsNs
 			// Make buffer with 10 bytes of memory
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
-
 			// Insert characters
 			char *myMsg = "hello";
 
@@ -49,9 +46,6 @@ namespace RingBuffTestsNs
 		{
 			// Make buffer with 10 bytes of memory
 			RingBuffNs::RingBuff ringBuff(10);
-
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
 
 			// Create C string
 			char *myMsg = "hello!!!";

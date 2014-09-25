@@ -25,10 +25,6 @@ namespace RingBuffTestsNs
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitSuccess())
-				// Init failed, error!
-				CHECK(false);
-
 			for(uint8_t x = 0; x < 9; x++)
 			{
 				// Insert 1 character

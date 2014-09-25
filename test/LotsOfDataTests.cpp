@@ -2,7 +2,7 @@
 //! @file 			LotsOfDataTests.cpp
 //! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-07-25
-//! @last-modified 	2014-09-25
+//! @last-modified 	2014-09-26
 //! @brief 			Tests that the buffer does not do weird things when lots of data is read/written to it.
 //! @details
 //!					See README.rst in root dir for more info.
@@ -25,9 +25,6 @@ namespace RingBuffTestsNs
 		MTEST(LotsOfDataTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
-
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
 
 			// Insert 5 characters
 			char someChars[] = "12345";

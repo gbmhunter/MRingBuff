@@ -2,7 +2,7 @@
 //! @file 				RingBuff.cpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created 			2013-07-30
-//! @last-modified		2014-08-12
+//! @last-modified		2014-09-26
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -15,12 +15,15 @@
 //========================================= INCLUDES ============================================//
 //===============================================================================================//
 
-// System libraries
+//===== SYSTEM LIBRARIES =====//
 //#include <iostream>		// debug
 #include <stdint.h>		// uint32_t, e.t.c
 #include <stdlib.h>		// calloc();
 
-// User includes
+//===== USER LIBRARIES =====//
+#include "MAssert/api/MassertApi.hpp"	// M_ASSERT()
+
+//===== USER SOURCE =====//
 #include "../include/Config.hpp"
 #include "../include/RingBuff.hpp"
 
@@ -39,8 +42,7 @@ namespace RingBuffNs
 		capacity(capacity),
 		headPos(0),
 		tailPos(0),
-		numElements(0),
-		isInitSuccess(false)
+		numElements(0)
 	{			
 		// Create space for buffer, also 0 buffer (although
 		// not strictly needed)
@@ -48,35 +50,18 @@ namespace RingBuffNs
 		this->buffMemPtr = new uint8_t[100];
 		
 		// In an embedded environment no exception may be thrown for bad alloc
-		if(this->buffMemPtr == nullptr)
-		{
-			// Memory allocation failed :-O
-			return;
-		}
+		M_ASSERT(this->buffMemPtr);
 		
-		// Init completed successfully
-		this->isInitSuccess = true;
 	}
 	
 	RingBuff::~RingBuff()
 	{
-		if(!this->isInitSuccess)
-			return;
-
 		// Free memory allocated in constructor
 		delete[] this->buffMemPtr;
-	}
-
-	bool RingBuff::IsInitSuccess() const
-	{
-		return this->isInitSuccess;
 	}
  
 	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic)
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		//std::cout << "numBytes = '" << numBytes << "' .numElements = '" << this->numElements << "'." << std::endl;
 
 		// Check whether user only wants to write data if all data
@@ -132,9 +117,6 @@ namespace RingBuffNs
 	
 	uint32_t RingBuff::Write(const uint8_t *buff, uint32_t numBytes)
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		// Simplified overload of Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic),
 		// default behaviour is to only write to buffer if all elements will fit
 		return this->Write(buff, numBytes, ReadWriteLogic::ALL);
@@ -142,9 +124,6 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Write(const char *string, ReadWriteLogic writeLogic)
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		bool nullFound = false;
 		uint32_t x;
 
@@ -186,9 +165,6 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Write(const char *string)
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		// Simplified overload of Write(const uint8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic),
 		// default behaviour is to only write to buffer if all elements will fit
 		return this->Write(string, ReadWriteLogic::ALL);
@@ -196,9 +172,6 @@ namespace RingBuffNs
 
 	bool RingBuff::Write(char charToWrite)
 	{
-		if(!this->isInitSuccess)
-			return false;
-
 		// Write a single byte to the buffer, if there is space.
 		if(this->Write((uint8_t*)&charToWrite, 1, ReadWriteLogic::ALL) == 1)
 			// Byte was written to buffer successfully
@@ -210,10 +183,6 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Peek(uint8_t *buff, uint32_t numBytes)
 	{
-		if(!this->isInitSuccess)
-			//! @todo Add assert()
-			return 0;
-
 		uint32_t i;
 
 		// Remembers the current position in buff, the buffer to write to
@@ -261,9 +230,6 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Read(uint8_t *buff, uint32_t numBytes)
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		uint32_t i;
 		uint8_t * currPos;
 		currPos = buff;
@@ -302,9 +268,6 @@ namespace RingBuffNs
 
 	uint8_t RingBuff::Read()
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		if(!this->IsData())
 			return 0;
 
@@ -319,9 +282,6 @@ namespace RingBuffNs
 
 	void RingBuff::Clear()
 	{
-		if(!this->isInitSuccess)
-			return;
-
 		// Does not 0 data, as this does not matter,
 		// Just resets tail, head and number of elements
 		this->tailPos = 0;
@@ -331,9 +291,6 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::Capacity() const
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		// Just return the saved size of the buffer
 		return this->capacity;
 	}
@@ -341,17 +298,11 @@ namespace RingBuffNs
 
 	uint32_t RingBuff::NumElements() const
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		return this->numElements;
 	}
 
 	bool RingBuff::IsData() const
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		// Return true if there are any data elements currently in the buffer
 		if(this->numElements > 0)
 			return true;
@@ -361,9 +312,6 @@ namespace RingBuffNs
 
 	bool RingBuff::IsSpace() const
 	{
-		if(!this->isInitSuccess)
-			return false;
-
 		if(this->numElements < this->capacity)
 			// There is at least one element free in buffer
 			return true;
@@ -375,9 +323,6 @@ namespace RingBuffNs
 
 	bool RingBuff::Resize(uint32_t newCapacity)
 	{
-		if(!this->isInitSuccess)
-			return 0;
-
 		// First, shuffle all data backwards so that tailPos is at 0
 		// this makes resizing easier
 		this->ShiftElementsSoTailPosIsZero();
@@ -415,9 +360,6 @@ namespace RingBuffNs
 
 	void RingBuff::ShiftElementsSoTailPosIsZero()
 	{
-		if(!this->isInitSuccess)
-			return;
-
 		uint32_t currNumElements = this->NumElements();
 
 		// Create a temp buffer memory space for copying
@@ -438,6 +380,6 @@ namespace RingBuffNs
 	}
 
 
-} // namespace RingBuffNs
+} // namespace MRingBuffNs
 
 // EOF

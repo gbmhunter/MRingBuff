@@ -2,7 +2,7 @@
 //! @file 				RingBuff.hpp
 //! @author 			Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created 			2013-07-30
-//! @last-modified		2014-08-25
+//! @last-modified		2014-09-26
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
@@ -22,10 +22,10 @@
 //========================================== INCLUDES ===========================================//
 //===============================================================================================//
 
-// System libraries
+//===== SYSTEM LIBRARIES =====//
 #include <stdint.h>
 
-// User source
+//===== USER SOURCE =====//
 #include "Config.hpp"
 
 //===============================================================================================//
@@ -65,10 +65,6 @@ namespace RingBuffNs
 
 			//! @brief		Destructor. Frees memory allocated in constructor.
 			~RingBuff();
-
-			//! @brief		Use this to check if the initialisation in the constructor was successful.
-			//! @returns	True if initialisation was successful, otherwise false.
-			bool IsInitSuccess() const;
 			
 			//! @brief		Writes a number of bytes to the ring buffer.
 			//! @details	Will return early if there is no more space left in the buffer. Does
@@ -175,10 +171,6 @@ namespace RingBuffNs
 			//! @details	This is useful to do before resizing the buffer memory using realloc(). Used in
 			//!				Resize().
 			void ShiftElementsSoTailPosIsZero();
-
-			//! @brief		Set to true by the constructor once initialisation is complete.
-			//! @details	Used by most methods to prevent errors if initialisation failed.
-			bool isInitSuccess;
 		
 			//! @brief		Pointer to buffer. Memory allocated in constructor.
 			uint8_t* buffMemPtr;

@@ -75,7 +75,7 @@ namespace RingBuffTestsNs
 			// Clear the buffer
 			ringBuff.Clear();
 
-			char readBuff[8];
+			char readBuff[8] = {0};
 			ringBuff.Read((uint8_t*)readBuff, 8);
 
 			// Check read data is empty

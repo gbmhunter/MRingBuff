@@ -2,7 +2,7 @@
 //! @file 			PeekReadTests.cpp
 //! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-08-12
-//! @last-modified 	2014-09-25
+//! @last-modified 	2014-09-26
 //! @brief 			Tests that RingBuff::Peek() works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
@@ -24,9 +24,6 @@ namespace RingBuffTestsNs
 		MTEST(PeekReadTest)
 		{
 			RingBuffNs::RingBuff ringBuff(10);
-
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
 
 			// Insert 5 characters
 			char someChars[] = "12345";

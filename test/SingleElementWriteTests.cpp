@@ -2,7 +2,7 @@
 //! @file 			SingleElementWriteTests.cpp
 //! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-08-01
-//! @last-modified 	2014-09-25
+//! @last-modified 	2014-09-26
 //! @brief 			Tests that the method 'bool RingBuff::Write(char charToWrite)' works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
@@ -25,14 +25,11 @@ namespace RingBuffTestsNs
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
-
 			// Insert 1 character
 			ringBuff.Write('a');
 
 			// Now read these out
-			char readBuff[20];
+			char readBuff[20] = {0};
 			uint8_t x = 0;
 
 			while(ringBuff.IsData())
@@ -51,9 +48,6 @@ namespace RingBuffTestsNs
 		MTEST(SingleElementReadTest2)
 		{
 			RingBuffNs::RingBuff ringBuff(3);
-
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
 
 			// Insert characters
 			ringBuff.Write('a');

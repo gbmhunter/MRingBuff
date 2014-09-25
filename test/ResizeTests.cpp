@@ -2,7 +2,7 @@
 //! @file 			ResizeTests.cpp
 //! @author 		Geoffrey Hunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 //! @created		2014-07-25
-//! @last-modified 	2014-09-25
+//! @last-modified 	2014-09-26
 //! @brief 			Tests that the RingBuff::Resize() method works correctly.
 //! @details
 //!					See README.rst in root dir for more info.
@@ -25,6 +25,7 @@ namespace RingBuffTestsNs
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
+			// Now resize to 20
 			if(!ringBuff.Resize(20))
 				CHECK(false);
 
@@ -42,14 +43,14 @@ namespace RingBuffTestsNs
 			ringBuff.Write(someChars);
 
 			// Read one
-			char readBuff1[5];
+			char readBuff1[5] = {0};
 			ringBuff.Read((uint8_t*)readBuff1, 1);
 
 			// Now resize to 20
 			if(!ringBuff.Resize(20))
 				CHECK(false);
 
-			char readBuff2[5];
+			char readBuff2[5] = {0};
 			ringBuff.Read((uint8_t*)readBuff2, 4);
 
 			// Check data is still correct
@@ -61,15 +62,12 @@ namespace RingBuffTestsNs
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
-
 			// Insert 5 characters
 			char someChars[] = "12345";
 			ringBuff.Write(someChars);
 
 			// Now read these out
-			char readBuff[5];
+			char readBuff[5] = {0};
 			ringBuff.Read((uint8_t*)readBuff, 5);
 
 			// Now insert 7 more, this should wrap around
@@ -98,14 +96,14 @@ namespace RingBuffTestsNs
 			ringBuff.Write(someChars);
 
 			// Read one
-			char readBuff1[5];
+			char readBuff1[5] = {0};
 			ringBuff.Read((uint8_t*)readBuff1, 1);
 
 			// Now resize to 5
 			if(!ringBuff.Resize(5))
 				CHECK(false);
 
-			char readBuff2[5];
+			char readBuff2[5] = {0};
 			ringBuff.Read((uint8_t*)readBuff2, 5);
 
 			// Check data is still correct
@@ -117,15 +115,12 @@ namespace RingBuffTestsNs
 		{
 			RingBuffNs::RingBuff ringBuff(10);
 
-			if(!ringBuff.IsInitSuccess())
-				CHECK(false);
-
 			// Insert 5 characters
 			char someChars[] = "12345";
 			ringBuff.Write(someChars);
 
 			// Now read these out
-			char readBuff[5];
+			char readBuff[5] = {0};
 			ringBuff.Read((uint8_t*)readBuff, 5);
 
 			// Now insert 7 more, this should wrap around
