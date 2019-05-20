@@ -6,12 +6,12 @@ MRingBuff
 A C++ ring (aka circular, FIFO) buffer object designed for embedded applications.
 ---------------------------------------------------------------------------------
 
-.. image:: https://api.travis-ci.org/mbedded-ninja/MRingBuff.png?branch=master   
-	:target: https://travis-ci.org/mbedded-ninja/MRingBuff
+.. image:: https://api.travis-ci.org/gbmhunter/MRingBuff.png?branch=master   
+	:target: https://travis-ci.org/gbmhunter/MRingBuff
 
 - Author: gbmhunter <gbmhunter@gmail.com> (www.mbedded.ninja)
 - First Ever Commit: 2013-07-30
-- Last Modified: 2014-09-26
+- Last Modified: 2019-05-20
 - Version: v2.4.2.0
 - Company: mbedded.ninja
 - Project: MToolkit module.
